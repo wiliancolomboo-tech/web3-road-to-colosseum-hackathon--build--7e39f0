@@ -1,0 +1,9 @@
+┌───────────────────────────────┐
+                    │      Kratos Execution Core    │
+                    ├───────────────────────────────┤
+                    │ • Zero-Copy Memory Layout     │
+                    │ • Canonical PDA Escrows       │
+                    │ • Pyth V2 Oracle Verification │
+                    │ • Permissionless Keeper Crank │
+                    │ • Sub-35,000 Compute Units    │
+                    └───────────────────────────────┘
