@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  aegis-sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - SOLANA_WS_URL=wss://api.devnet.solana.com
+      - PROGRAM_ID=Aegis111111111111111111111111111111111111111
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - ALERT_EMAIL_RECIPIENT=security@corporate-treasury.io
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SENTINEL_SECRET_KEY=${SENTINEL_SECRET_KEY}
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'console.log(process.uptime())'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

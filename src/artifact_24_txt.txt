@@ -1,0 +1,7 @@
+Grant fraud & milestone payment deadlocks cost Web3 foundations millions each year.
+
+Introducing @AeonVault 🏛️⚡️
+
+A non-custodial milestone escrow & autonomous conditional settlement protocol built for @Solana.
+
+Built for the @Colosseum hackathon. Here's how it works 🧵👇

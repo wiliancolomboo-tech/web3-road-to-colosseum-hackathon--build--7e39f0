@@ -1,0 +1,14 @@
++--------------------------------------------------------------------------------+
+| OPERATIONAL RUNBOOK: Valkyrie Autonomous Execution Daemon                     |
++--------------------------------------------------------------------------------+
+1. Node Initialization:
+   - Ensure the Keeper wallet has at least 1.0 SOL for gas priority fees.
+   - Run `docker-compose up -d --build` to launch background service.
+
+2. Healthchecks & Telemetry Verification:
+   - Run `docker logs -f valkyrie-keeper-worker` to monitor active crank triggers.
+   - Check Discord / Slack channel for live execution payload receipts.
+
+3. Emergency Pause / Drain:
+   - All funds remain in isolated user PDAs. In an emergency, traders can call
+     `cancel_order` independently without keeper coordination.

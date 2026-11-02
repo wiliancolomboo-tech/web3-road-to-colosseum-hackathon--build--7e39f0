@@ -1,0 +1,34 @@
+========================================================================================
+TIMECODE | VISUAL FOCUS                           | SPOKEN NARRATIVE / VOICE-OVER
+========================================================================================
+00:00    | Title Card: AEGIS PROTOCOL            | "Cascading liquidations and bad debt
+00:15    | Terminal: anchor test passing          |  are the silent killers of DeFi on Solana.
+         | Sub-second block visual                |  Aegis fixes this at the virtual machine level.
+                                                  |  We built an isolated, high-velocity clearinghouse
+                                                  |  powered by Pyth confidence-clamped oracles."
+
+00:15    | Diagram of Pessimistic Valuation       | "Traditional lending markets rely on spot prices,
+00:40    | showing (Price ± Confidence Interval)  |  ignoring volatility spikes. Aegis evaluates
+         | Collateral penalized, Debt inflated    |  obligations using a dual pessimistic oracle model:
+                                                  |  collateral is penalized by sigma, and debt is inflated.
+                                                  |  Liquidations occur before solvency breaks,
+                                                  |  guaranteeing zero bad debt for depositors."
+
+00:40    | Live Test Execution of Liquidation     | "Watch this atomic liquidation: as health drops below
+01:10    | CLI logs showing 48,310 CU consumed    |  1.0, an automated keeper settles 50% of the debt
+         | and PDA balance transfer               |  in a single transaction. It consumes under 50,000 CUs,
+                                                  |  leaving 1.35 million CUs for flash-swaps, Jupiter
+                                                  |  arbitrage, and Jito MEV bundles."
+
+01:10    | Architecture slide: Isolated Vaults    | "Aegis isolates every lending pair. A collapse in an
+01:35    | & Zero-Copy Struct layouts             |  exotic meme coin or LST never contaminates core USDC
+                                                  |  or SOL liquidity. Everything is built with
+                                                  |  production-grade Anchor 0.30, strictly validated
+                                                  |  canonical PDAs, and zero-allocation fixed math."
+
+01:35    | Summary Slide: Traction, Metrics       | "Aegis is the institutional-grade credit and liquidation
+02:00    | and Github Repository QR Code          |  spine Solana needs for the next billion in capital.
+                                                  |  We are live on Devnet. Inspect our audited contracts,
+                                                  |  run the test suite, and back the MVP that protects
+                                                  |  Solana's liquidity. Thank you."
+========================================================================================

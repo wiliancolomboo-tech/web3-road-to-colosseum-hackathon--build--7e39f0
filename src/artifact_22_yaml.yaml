@@ -1,0 +1,21 @@
+version: "3.8"
+
+services:
+  sentinel-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis-sentinel-daemon
+    restart: always
+    environment:
+      - PROGRAM_ID=Aegis111111111111111111111111111111111111111
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_FROM_EMAIL=audit@aegisstream.io
+      - CFO_AUDIT_EMAIL=treasury-audit@enterprise.xyz
+      - SECOPS_DISCORD_WEBHOOK_URL=${SECOPS_DISCORD_WEBHOOK_URL}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

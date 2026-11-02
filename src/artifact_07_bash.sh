@@ -1,12 +1,19 @@
-# 1. Clone & Initialize Directory Layout
-mkdir -p kratos-protocol && cd kratos-protocol
-anchor init . --javascript false
+# 1. Clone repository and install dependencies
+git clone https://github.com/chronolock-protocol/chronolock-solana.git
+cd chronolock-solana
+npm install -g @coral-xyz/anchor-cli
+yarn install
 
-# 2. Configure Solana CLI to Localnet
-solana config set --url localhost
+# 2. Build Anchor binary with deterministic verifiable BPF compiler
+anchor build
 
-# 3. Generate Local Keypair (if not present)
-solana-keygen new --no-bip39-passphrase -o ~/.config/solana/id.json --force
+# 3. Synchronize program ID into Anchor.toml and lib.rs
+anchor keys sync
 
-# 4. Start Local Solana Validator in a separate terminal window:
-solana-test-validator --reset --quiet
+# 4. Deploy to Solana Devnet
+solana config set --url https://api.devnet.solana.com
+solana airdrop 2
+anchor deploy --provider.cluster devnet
+
+# 5. Execute complete verification test suite
+anchor test

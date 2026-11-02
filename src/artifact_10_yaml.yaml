@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  aegisflow-sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegisflow-sentinel-daemon
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Aegis11111111111111111111111111111111111111
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - AUDIT_EMAIL_TO=compliance@enterprise.com
+      - ARBITER_KEYPAIR_JSON=${ARBITER_KEYPAIR_JSON}
+    ports:
+      - "8080:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

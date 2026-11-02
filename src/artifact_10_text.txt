@@ -1,0 +1,19 @@
+1/4 🛡️ Introducing AegisFlow: The Autonomous Verifiable Liquidity Guard & Stream Settlement Engine on @Solana, engineered for the @ColosseumOrg Hackathon!
+
+Enterprise treasuries & PayFi protocols shouldn't depend on vulnerable, opaque off-chain cron jobs.
+
+Here is how we fixed it: 🧵👇
+
+2/4 ⚡ Why AegisFlow?
+Traditional automated vaults suffer from centralized off-chain keepers, clock-drift issues, and front-running. 
+
+AegisFlow introduces mathematical state invariants in Anchor, zero-unsafe CPI escrows, and a permissionless keeper bounty layer with sub-second finality.
+
+3/4 🌐 Real Enterprise Telemetry Out-of-the-Box:
+Every stream tranche settlement cryptographically broadcasts via high-throughput Solana WebSockets directly into Slack incident pipelines and @resend audit receipts. Zero lag. Deterministic proofs.
+
+4/4 🛠️ 100% open-source, fully tested Anchor suite, Dockerized keeper infrastructure, and turnkey operations. 
+
+Read our full architecture spec & spin up the MVP today!
+GitHub: https://github.com/aegisflow/aegisflow-protocol
+Built for @Solana & @ColosseumOrg #Solana #DeFi #Colosseum

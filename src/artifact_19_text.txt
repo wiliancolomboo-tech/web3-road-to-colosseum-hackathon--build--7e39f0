@@ -1,0 +1,7 @@
+vortex-protocol-qa-matrix
+    ✔ 1. Initializes protocol configuration with valid basis points (412ms)
+    ✔ 2. Successfully escrows tokens into IntentOrder PDA (385ms)
+    ✔ 3. Enforces user cancel permissions & closes Intent PDA with full refund (520ms)
+    ✔ 4. Executes Flash Loan borrow and enforces repayment integrity (498ms)
+
+  4 passing (2s)

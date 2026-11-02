@@ -1,0 +1,1 @@
+chain_id + escrow_pubkey + event_type + state_version

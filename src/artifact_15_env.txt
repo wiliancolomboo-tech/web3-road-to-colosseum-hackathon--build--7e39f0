@@ -1,0 +1,9 @@
+# Solana Network Config
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_WS_URL=wss://api.devnet.solana.com
+PROGRAM_ID=SntryVault1111111111111111111111111111111111
+
+# Enterprise Alerting Credentials
+RESEND_API_KEY=re_123456789_enterpriseKey
+SECURITY_ALERT_EMAIL=secops@institutionalvault.xyz
+OPS_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder

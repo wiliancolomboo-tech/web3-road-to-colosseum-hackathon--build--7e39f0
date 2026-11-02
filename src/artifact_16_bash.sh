@@ -1,0 +1,1 @@
+docker logs -f vanguard-sentinel

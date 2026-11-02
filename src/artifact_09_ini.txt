@@ -1,0 +1,10 @@
+# Solana Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+PROGRAM_ID=KRONoSzQ842J8u8pQ4Z8c8sS84a2dFwG1g8JdK7d9Xm
+KEEPER_KEYPAIR_JSON=[12,34,56,...]
+
+# Enterprise Incident Response Webhooks
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_live_xxxxxxxxxxxxxxxxxxxxxx
+RESEND_ALERT_EMAIL=security-lead@enterprise-protocol.fi

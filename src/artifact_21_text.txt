@@ -1,0 +1,7 @@
+aegis_vault MVP verification
+    ✔ 1. Initializes Vault with Dynamic Curve Parameters (185ms)
+    ✔ 2. Deposits Liquidity and Mints 1:1 Initial LP Shares (220ms)
+    ✔ 3. Executes Atomic Flash Loan and Validates Dynamic Repayment Assertion (285ms)
+    ✔ 4. Blocks Reentrancy Attempts & Unsettled State Violations (140ms)
+
+  4 passing (1.2s)

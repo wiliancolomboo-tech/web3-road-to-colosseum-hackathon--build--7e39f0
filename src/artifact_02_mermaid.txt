@@ -1,75 +1,38 @@
 flowchart TD
-    subgraph Client Layer
-        U[User Wallet]
-        K[Permissionless Keeper / Crank Bot]
+    %% Actors
+    Sponsor[Funder / Enterprise Sponsor]
+    Beneficiary[Beneficiary / Contributor / AI Agent]
+    Keeper[ChronoLock Off-Chain Keeper Worker]
+    EnterpriseAPI[Enterprise Webhook / Slack / Resend API]
+
+    %% On-Chain Core
+    subgraph Solana Runtime [Solana Blockchain - Anchor Program]
+        Program[ChronoLock Program: chrono_lock]
+        EscrowPDA[Escrow State PDA]
+        VaultPDA[Escrow Vault Token/SOL PDA]
     end
 
-    subgraph Solana Runtime - Kratos Program Core
-        direction TB
-        subgraph Accounts & State
-            CFG[Config Account<br/>PDA: 'config']
-            ORD[Order State Account<br/>PDA: 'order', user_pubkey, order_id]
-            VAULT[Escrow Vault Token Account<br/>PDA: 'vault', order_pubkey]
-        end
+    %% State Transitions
+    Sponsor -->|1. initialize_escrow deposit SOL/SPL| Program
+    Program -->|Instantiates| EscrowPDA
+    Program -->|Transfers Capital| VaultPDA
 
-        subgraph Instruction Processors
-            IX_INIT[initialize_config]
-            IX_CREATE[create_stream_order]
-            IX_EXEC[execute_tranche]
-            IX_CANCEL[cancel_order]
-        end
+    Beneficiary -->|2. submit_milestone deliverable hash| Program
+    Program -->|Transitions state to PENDING_APPROVAL| EscrowPDA
 
-        subgraph Security & Verification Guards
-            G_SIGN[Signer Verification]
-            G_PDA[PDA Bump & Seed Validation]
-            G_TIME[Interval & Expiry Chrono Guard]
-            G_MATH[Checked Math & Overflow Guard]
-            G_ORACLE[Pyth Staleness & Confidence Guard]
-        end
+    alt Mutual Approval or Auto-Release Window Elapsed
+        Sponsor -->|3a. approve_milestone| Program
+        Keeper -->|3b. evaluate_auto_release if deadline passes| Program
+        Program -->|State: APPROVED| EscrowPDA
+        Program -->|Disburse Milestone Amount| Beneficiary
+        Program -->|Emit MilestoneReleased Event| SolanaLog[Solana Transaction Logs]
+    else Dispute Triggered
+        Sponsor -->|3c. dispute_milestone| Program
+        Program -->|State: DISPUTED| EscrowPDA
+        Program -->|Emit EscrowDisputed Event| SolanaLog
     end
 
-    subgraph External Protocols & Programs
-        SPL[SPL Token Program / Token-2022]
-        PYTH[Pyth Network Price Feed]
-        USER_ATA[User Source / Dest Token Accounts]
-        KEEPER_ATA[Keeper Fee Token Account]
-        TARGET_SWAP[Solana Liquidity Venue / Swapper]
-    end
-
-    %% Creation Flow
-    U -->|1. Deposit & Init Order| IX_CREATE
-    IX_CREATE --> G_SIGN
-    IX_CREATE --> G_MATH
-    IX_CREATE -->|Initialize State| ORD
-    IX_CREATE -->|Transfer SPL Inflow| SPL
-    SPL -->|Lock Deposit| VAULT
-
-    %% Execution Flow
-    K -->|2. Observe State & Trigger Tranche| IX_EXEC
-    IX_EXEC --> G_TIME
-    IX_EXEC --> G_PDA
-    IX_EXEC -->|Query Latest Price & Conf| PYTH
-    PYTH --> G_ORACLE
-    G_ORACLE -->|Price Valid| G_MATH
-
-    G_MATH -->|3. Transfer Tranche Tokens| SPL
-    VAULT -->|Release Chunk| TARGET_SWAP
-    TARGET_SWAP -->|Swapped Tokens| USER_ATA
-    VAULT -->|Keeper Incentive Fee| KEEPER_ATA
-
-    %% Cancellation Flow
-    U -->|Emergency Cancel / Refund| IX_CANCEL
-    IX_CANCEL --> G_SIGN
-    IX_CANCEL -->|Drain Remaining Balance| SPL
-    VAULT -->|Refund Balance| USER_ATA
-    IX_CANCEL -->|Close Account & Reclaim Rent| U
-
-    classDef client fill:#2d3748,stroke:#cbd5e0,stroke-width:2px,color:#fff;
-    classDef program fill:#1a202c,stroke:#4a5568,stroke-width:2px,color:#fff;
-    classDef external fill:#1a365d,stroke:#63b3ed,stroke-width:2px,color:#fff;
-    classDef guards fill:#742a2a,stroke:#feb2b2,stroke-width:1px,color:#fff;
-
-    class U,K client;
-    class CFG,ORD,VAULT,IX_INIT,IX_CREATE,IX_EXEC,IX_CANCEL program;
-    class G_SIGN,G_PDA,G_TIME,G_MATH,G_ORACLE guards;
-    class SPL,PYTH,USER_ATA,KEEPER_ATA,TARGET_SWAP external;
+    %% Enterprise Off-Chain Automation
+    SolanaLog -->|WebSocket Log Subscription| Keeper
+    Keeper -->|Verify Milestone Proof & Status| EscrowPDA
+    Keeper -->|Forward Payload with HMAC-SHA256 Signature| EnterpriseAPI

@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  aegisguard-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegisguard-agent-daemon
+    restart: unless-stopped
+    command: ["node", "dist/cli.js", "listen", "-k", "/etc/solana/id.json", "-p", "Aeg1sGuard1111111111111111111111111111111111", "-r", "${SOLANA_RPC_URL:-https://api.devnet.solana.com}"]
+    volumes:
+      - ./worker-keypair.json:/etc/solana/id.json:ro
+    environment:
+      - NODE_ENV=production
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - AUDIT_EMAIL=${AUDIT_EMAIL}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - SOLANA_RPC_URL=${SOLANA_RPC_URL:-https://api.devnet.solana.com}
+    ports:
+      - "8080:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

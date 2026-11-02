@@ -1,0 +1,6 @@
+graph TD
+    Attack1[Front-Running / Sandwiches] --> Guard1[Discrete Slot Auctions: Intra-slot ordering does not affect UCP]
+    Attack2[Token Drain via Fake Mints] --> Guard2[Dual Escrow PDA check: Vault authorities strictly seeded by AuctionPool]
+    Attack3[Rounding Micro-Theft] --> Guard3[Directional Floor Rounding on user payouts; remainders locked in pool]
+    Attack4[Premature Epoch Resolution] --> Guard4[Strict Clock verification: clock.slot >= epoch.end_slot]
+    Attack5[Reentrancy / Double Settle] --> Guard5[Check-Effects-Interactions: order.settled set BEFORE CPI transfer]

@@ -1,0 +1,5 @@
+### Operational Runbook & Incident Protocols
+1. **Healthcheck & RPC Continuity**:
+   The Keeper monitors connection health via `connection.getVersion()`. If RPC dropouts exceed 3 retries, fallback failover to secondary backup RPC endpoints triggers automatically.
+2. **Instant Emergency Response Protocol**:
+   In the event of an off-chain breach, run the emergency freeze script:

@@ -1,0 +1,15 @@
+1/3 🛡️ Introducing SentinelFlow: The Autonomous Execution & Risk Guardian Engine on @Solana, engineered for the @ColosseumOrg Hackathon! 
+
+DeFi automation is plagued by centralized crons and zero off-chain observability. SentinelFlow solves this with non-custodial PDA vaults & sub-slot deterministic settlement. ⚡️🧵👇
+
+2/3 ⚙️ Under the hood:
+• Anchor 0.30 smart contracts with sub-400ms time & state verification
+• Re-entrancy-free architecture with owner emergency circuit breakers
+• Real-time enterprise telemetry dispatched in parallel to @Resend, Slack & Discord for zero-blindspot ops
+
+3/3 🚀 Built production-ready with 100% test assertions, Docker deployment, and sub-second dynamic priority fee escalation. 
+
+Ready to power the next generation of resilient Solana DeFi.
+
+Check out our MVP submission & github code: https://github.com/sentinelflow/sentinelflow-core
+@Solana @ColosseumOrg #Solana #SolanaHackathon #Web3 #Rust

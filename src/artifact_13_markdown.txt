@@ -1,0 +1,14 @@
+1/3 🚨 Introducing VortexGuard (@VortexGuard): The Autonomous Milestone Escrow & SLA Circuit Breaker native to @Solana!
+
+Built for the @Colosseum hackathon, VortexGuard bridges trustless smart contract escrows with enterprise Slack, Discord, and Resend email alerting. ⚡️🦀
+
+2/3 Why does this matter?
+DAO grants and contractor bounties lose millions to stalled deliveries and manual sign-offs.
+VortexGuard solves this with:
+✅ Deterministic PDA milestone vaults
+✅ Automated SLA-breach refund clawbacks
+✅ Real-time multi-channel enterprise notifications
+
+3/3 Completely open-source, fully tested with @coral_xyz Anchor, and deployable in 1 click via Docker. 
+
+Explore the demo & repo built for the Colosseum Hackathon: https://github.com/vortex-guard/protocol #Solana #Colosseum #SolanaDev #Anchor

@@ -1,0 +1,27 @@
+FROM node:20-slim AS builder
+
+WORKDIR /usr/src/app
+
+COPY package.json tsconfig.json ./
+RUN npm install --frozen-lockfile
+
+COPY cli/ ./cli/
+COPY programs/ ./programs/
+
+RUN npm run build || true
+
+FROM node:20-slim AS runner
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package.json ./package.json
+COPY --from=builder /usr/src/app/tsconfig.json ./tsconfig.json
+COPY --from=builder /usr/src/app/cli ./cli
+
+ENV NODE_ENV=production
+USER node
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "process.exit(0)"
+
+CMD ["node", "-r", "ts-node/register", "cli/keeper-bot.ts"]

@@ -1,0 +1,4 @@
+Batch payroll and milestone escrows are broken for Web3 organizations. 
+Workers risk unpaid labor, and treasuries risk capital flight.
+
+Introducing @AegisStream for the @ColosseumOrg Hackathon: Autonomous institutional streaming escrow natively engineered on @Solana. ⚡🧵👇

@@ -1,0 +1,10 @@
+# Solana Network Configuration
+SOLANA_CLUSTER=devnet
+SOLANA_RPC_URL=https://api.devnet.solana.com
+PROGRAM_ID=Aegis11111111111111111111111111111111111111
+
+# Enterprise Telemetry
+RESEND_API_KEY=re_live_enterpriseKeyExample123
+NOTIFICATION_EMAIL=treasury@colosseum-sponsor.io
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder

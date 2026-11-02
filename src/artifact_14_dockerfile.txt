@@ -1,0 +1,27 @@
+# Multi-stage container for NexusVault Autonomous Daemon
+FROM node:20-slim AS builder
+
+WORKDIR /usr/src/app
+
+COPY client/package*.json ./
+RUN npm ci
+
+COPY client/ ./
+RUN npm run build
+
+FROM node:20-slim AS runner
+
+WORKDIR /app
+ENV NODE_ENV=production
+
+COPY client/package*.json ./
+RUN npm ci --only=production
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+# Run healthcheck
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD node -e "process.exit(0)"
+
+USER node
+CMD ["node", "dist/agentWorker.js"]

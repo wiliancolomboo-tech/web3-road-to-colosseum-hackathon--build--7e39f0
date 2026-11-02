@@ -1,0 +1,5 @@
+2/3 Built with Anchor v0.30, AegisVault brings mathematically sound, non-custodial capital safety:
+🔒 PDA-controlled token reserve vaults
+⏱️ Deterministic milestone state machines with timelocks
+⚖️ Arbiter multi-sig dispute settlement
+⚡ Real-time webhooks & @resend TLS audit statements

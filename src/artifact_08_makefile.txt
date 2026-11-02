@@ -1,0 +1,16 @@
+.PHONY: build test deploy start-keeper
+
+build:
+	anchor build
+
+test:
+	anchor test
+
+deploy-devnet:
+	solana config set --url devnet
+	anchor build
+	solana program deploy target/deploy/vanguard_protocol.so
+
+start-keeper:
+	npm --prefix keeper run build
+	npm --prefix keeper start

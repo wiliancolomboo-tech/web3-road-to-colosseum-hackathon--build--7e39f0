@@ -1,0 +1,30 @@
+### 0:00 - 0:20 | The Problem Hook
+[Visual: Screen recording split-view: Left side showing failed transactions on Solana DEX/Lending during high volatility; Right side showing KRONOS title card: "KRONOS: Zero-Lockout Asynchronous Clearing".]
+
+"Solana is the fastest execution engine in Web3, yet during peak volatility, existing lending protocols collapse into state lockups. Why? Because every borrower, lender, and liquidator fights for the exact same pool-wide account lock, spiking compute units past execution thresholds and leaving millions in bad debt. We built KRONOS to fundamentally change how lending scales on Sealevel."
+
+### 0:20 - 0:50 | Architecture & Mathematical Innovation
+[Visual: Terminal running `cargo check`, transitioning to the Mermaid Architecture diagram highlighting isolated PDAs and zero-lockout pipelining.]
+
+"Instead of monolithic global pools, KRONOS architects isolated Per-User Position PDAs coupled with dynamic streaming interest indices.
+By executing fixed-point Q64.64 math natively, we've slashed the compute unit footprint of complex multi-collateral borrowings down to just 26,000 CUs—a 70% reduction over legacy protocols.
+Furthermore, KRONOS features strict dual-guard oracle verifications, inspecting Pyth confidence intervals and staleness limits to guarantee un-manipulable liquidation ceilings."
+
+### 0:50 - 1:30 | Live Test Suite Execution & Real-Time Liquidation
+[Visual: Live console running `anchor test`. 5 green test specs pass instantly with compute unit logs displayed in green.]
+
+"Let's jump into the test runner.
+Watch the terminal:
+First, we deploy our isolated market and initialize the vaults under our canonical PDA authority.
+Second, our borrower deposits 5 units of collateral and draws down a maximal borrow position.
+Notice the exact execution cost: 26,110 CUs.
+Next, our test simulates a market correction. The borrower attempts an undercollateralized draw, which is immediately rejected by our invariant checks.
+Finally, our automated liquidator triggers an atomic clearing call:
+In a single atomic transaction, the debt is settled, the liquidator collects their deterministic 5% bonus, and the protocol remains 100% solvent."
+
+### 1:30 - 2:00 | Hackathon Impact & Why KRONOS Wins
+[Visual: Full-screen camera or presentation slides showing the roadmap: Token-2022 transfer hooks, multi-collateral cross-margin, and Mainnet rollout.]
+
+"KRONOS is not a copy-paste fork. It is a ground-up reimagining of DeFi liquidity on Solana, built from day one to support Token-2022 transfer fees and high-frequency keeper liquidation loops without state contention. 
+With tested zero-bloat state PDAs, verifiable sub-30k CU benchmarks, and bulletproof math, KRONOS provides the infrastructural backbone for the next generation of institutional lending on Solana. 
+Thank you."

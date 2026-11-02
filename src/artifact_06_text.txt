@@ -1,0 +1,6 @@
+services/keeper/
+├── package.json
+├── tsconfig.json
+└── src/
+    ├── keeper-daemon.ts
+    └── notifier.ts

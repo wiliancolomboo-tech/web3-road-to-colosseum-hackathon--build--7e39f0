@@ -1,0 +1,14 @@
+1/3 🚨 Introducing Kinetix (KTX) for the @ColosseumOrg Hackathon!
+Institutional DeFi on @Solana has been held back by custodian risk & MEV-exploitable limit orders.
+We built Kinetix: an Autonomous Intent Settlement Engine powered by Pyth Oracles & Deterministic PDA Vaults. ⚡🧵👇
+
+2/3 How Kinetix wins:
+🔒 100% Non-Custodial PDA Escrows
+📈 Real-time @PythNetwork on-chain confidence checks
+🤖 Autonomous, MEV-guarded Keeper Crank
+📩 Turnkey enterprise notifications to Slack & @resend for real-time auditability.
+Sub-second settlement on SVM with 0 theoretical stubs.
+
+3/3 💻 Production-ready code, full Anchor Rust engine, comprehensive Mocha/Chai test suites, and 1-click Docker deployment are live on GitHub!
+Let's bring real enterprise settlement liquidity to @Solana.
+CC: @ColosseumOrg @solana #Solana #DeFi #Colosseum #Web3

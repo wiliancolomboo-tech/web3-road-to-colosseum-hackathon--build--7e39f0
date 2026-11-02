@@ -1,0 +1,7 @@
+How NexusGuard protects liquidity pools & DAO reserves:
+
+⚡ Anchor 0.30 PDA vaults: Zero custody, strictly deterministic rules
+🤖 Autonomous Sentinel: Real-time Sealevel monitoring & volatility triggers
+🔔 Enterprise Telemetry: Sub-second alerts via @resend & Discord webhooks
+
+No hot-wallet trust. Zero manual delays.

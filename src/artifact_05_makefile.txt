@@ -1,0 +1,20 @@
+.PHONY: all build test deploy start-daemon clean
+
+all: build test
+
+build:
+	anchor build
+
+test:
+	anchor test
+
+deploy-devnet:
+	solana config set --url https://api.devnet.solana.com
+	anchor build
+	solana program deploy target/deploy/aegis_escrow.so
+
+start-daemon:
+	ts-node src/sentinel_daemon.ts
+
+docker-up:
+	docker compose up --build -d

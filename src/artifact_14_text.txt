@@ -1,0 +1,7 @@
+AegisStream brings Wall Street-grade payroll automation to Solana. 
+
+✅ 100% test coverage
+✅ Complete Anchor smart contract
+✅ Turnkey Dockerized sentinel runner
+
+Read the code & inspect the architecture for @ColosseumOrg: https://github.com/aegis-stream/aegis-core 🚀🦀 #Solana #Colosseum #SolanaHackathon

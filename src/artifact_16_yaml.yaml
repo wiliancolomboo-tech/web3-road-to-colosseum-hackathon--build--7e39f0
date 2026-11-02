@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  aegis-sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis_sentinel_daemon
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - KEEPER_KEYPAIR_PATH=/secrets/keeper.json
+      - PROGRAM_ID=Aegis11111111111111111111111111111111111111
+      - TREASURY_CONFIG_PDA=${TREASURY_CONFIG_PDA}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - INCIDENT_EMAIL_RECIPIENT=${INCIDENT_EMAIL_RECIPIENT}
+      - CHECK_INTERVAL_MS=1500
+    volumes:
+      - ./secrets:/secrets:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"

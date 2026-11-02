@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  aethershield-sentry:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aethershield-sentry-worker
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=AethrG9qYxR3c4MsqeTqgqWbVyR6Zc12oKp1vR111111
+      - TARGET_VAULT_ADDRESS=5R6P...REPLACE_WITH_VAULT_PUBKEY...
+      - KEEPER_KEYPAIR_PATH=/secrets/keeper-keypair.json
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - ENTERPRISE_ALERT_EMAIL=${ENTERPRISE_ALERT_EMAIL}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - LOG_LEVEL=info
+    volumes:
+      - ./secrets:/secrets:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

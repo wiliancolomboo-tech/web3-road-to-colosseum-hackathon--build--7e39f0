@@ -1,0 +1,136 @@
+import * as anchor from "@coral-xyz/anchor";
+import { assert } from "chai";
+import { Proofrelay } from "../target/types/proofrelay";
+
+describe("proofrelay", () => {
+  const provider = anchor.AnchorProvider.env();
+  anchor.setProvider(provider);
+
+  const program = anchor.workspace.proofrelay as anchor.Program<Proofrelay>;
+  const buyer = provider.wallet;
+  const workProvider = anchor.web3.Keypair.generate();
+  const escrowId = new anchor.BN(Date.now());
+  const deadline = new anchor.BN(Math.floor(Date.now() / 1000) + 3600);
+  const amount = new anchor.BN(100_000_000);
+
+  let escrow: anchor.web3.PublicKey;
+
+  before(async () => {
+    await provider.connection.requestAirdrop(
+      workProvider.publicKey,
+      2_000_000_000
+    );
+
+    [escrow] = anchor.web3.PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("escrow"),
+        buyer.publicKey.toBuffer(),
+        escrowId.toArrayLike(Buffer, "le", 8)
+      ],
+      program.programId
+    );
+  });
+
+  it("initializes an escrow", async () => {
+    await program.methods
+      .initializeEscrow(
+        escrowId,
+        workProvider.publicKey,
+        amount,
+        deadline,
+        "Integration test"
+      )
+      .accounts({
+        buyer: buyer.publicKey,
+        escrow,
+        systemProgram: anchor.web3.SystemProgram.programId
+      })
+      .rpc();
+
+    const state = await program.account.escrow.fetch(escrow);
+    assert.equal(state.status.initialized, undefined);
+    assert.isTrue("initialized" in state.status);
+    assert.equal(state.amountLamports.toString(), amount.toString());
+  });
+
+  it("funds the escrow", async () => {
+    await program.methods
+      .fund()
+      .accounts({
+        buyer: buyer.publicKey,
+        escrow,
+        systemProgram: anchor.web3.SystemProgram.programId
+      })
+      .rpc();
+
+    const state = await program.account.escrow.fetch(escrow);
+    assert.isTrue("funded" in state.status);
+  });
+
+  it("rejects unauthorized submission", async () => {
+    const attacker = anchor.web3.Keypair.generate();
+
+    try {
+      await program.methods
+        .submitDeliverable(new Array(32).fill(1))
+        .accounts({
+          provider: attacker.publicKey,
+          escrow
+        })
+        .signers([attacker])
+        .rpc();
+
+      assert.fail("unauthorized provider was accepted");
+    } catch {
+      assert.ok(true);
+    }
+  });
+
+  it("accepts provider submission", async () => {
+    const digest = Array.from(Buffer.alloc(32, 7));
+
+    await program.methods
+      .submitDeliverable(digest)
+      .accounts({
+        provider: workProvider.publicKey,
+        escrow
+      })
+      .signers([workProvider])
+      .rpc();
+
+    const state = await program.account.escrow.fetch(escrow);
+    assert.isTrue("submitted" in state.status);
+    assert.equal(Buffer.from(state.deliverableHash).toString("hex"), "07".repeat(32));
+  });
+
+  it("releases funds after buyer approval", async () => {
+    await program.methods
+      .approve()
+      .accounts({
+        buyer: buyer.publicKey,
+        escrow,
+        provider: workProvider.publicKey
+      })
+      .rpc();
+
+    const state = await program.account.escrow.fetch(escrow);
+    assert.isTrue("released" in state.status);
+  });
+
+  it("prevents a second release", async () => {
+    try {
+      await program.methods
+        .approve()
+        .accounts({
+          buyer: buyer.publicKey,
+          escrow,
+          provider: workProvider.publicKey
+        })
+        .rpc();
+
+      assert.fail("second release was accepted");
+    } catch {
+      assert.ok(true);
+    }
+  });
+});

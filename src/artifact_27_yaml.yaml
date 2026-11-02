@@ -1,0 +1,26 @@
+version: "3.8"
+
+services:
+  nexus-sentinel:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nexus_stream_sentinel
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - SOLANA_WS_URL=wss://api.devnet.solana.com
+      - PROGRAM_ID=6bE2sN9bC8VbEaD8C9vB9Z8n4E3Q1w2Y5k7L8m9P0vjZ
+      - OPERATOR_PRIVATE_KEY=${OPERATOR_PRIVATE_KEY}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - ALERT_RECIPIENT_EMAIL=treasury@enterprise-corp.com
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - FEE_COLLECTOR_PUBKEY=${FEE_COLLECTOR_PUBKEY}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

@@ -1,0 +1,10 @@
+client/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── config.ts
+│   ├── sentinel_client.ts
+│   ├── integrations/
+│   │   ├── discord.ts
+│   │   └── resend.ts
+│   └── cli.ts

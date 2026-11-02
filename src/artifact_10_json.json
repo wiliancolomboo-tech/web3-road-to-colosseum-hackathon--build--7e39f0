@@ -1,0 +1,9 @@
+{
+  "status": "HEALTHY",
+  "protocol": "Khoros",
+  "network": "solana-devnet",
+  "programId": "Khoros1111111111111111111111111111111111111",
+  "agentPublicKey": "7WkK8P9...FqY1",
+  "rpcLatencyMs": 38,
+  "uptimeSeconds": 86400
+}

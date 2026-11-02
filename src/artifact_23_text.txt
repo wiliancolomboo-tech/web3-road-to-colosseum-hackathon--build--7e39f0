@@ -1,0 +1,2 @@
+Program 7vWsK... consumed 64280 of 200000 compute units
+Program 7vWsK... success

@@ -1,0 +1,28 @@
++-----------------------------------------------------------------------------------------------------+
+|                                      INTEGRATION TOPOLOGY                                           |
++-----------------------------------------------------------------------------------------------------+
+|                                                                                                     |
+|  [ Enterprise Client / CLI ]                                                                        |
+|              |                                                                                      |
+|              v RPC (HTTPS)                                                                          |
+|  [ Solana RPC Node Array: Helius / Triton / Private RPC ]                                           |
+|              |                                                                                      |
+|              v Slot Confirmation & Commitment Tracking                                              |
+|  [ ChronoLock Anchor Program on Solana Mainnet/Devnet ]                                             |
+|        |                                 |                                                          |
+|        | (Account PDA: seeds=[b"escrow", sponsor, escrow_id])                                       |
+|        v                                 v                                                          |
+|  [ Escrow State Account ]           [ Program Vault PDA ]                                           |
+|        |                                 |                                                          |
+|        +-------------------+-------------+                                                          |
+|                            | (Transaction Logs / WebSocket PubSub)                                  |
+|                            v                                                                        |
+|              [ ChronoLock Autonomous Keeper Worker ]                                                |
+|                            |                                                                        |
+|            +---------------+---------------+                                                        |
+|            |                               |                                                        |
+|            v                               v                                                        |
+|  [ Resend Email Service ]       [ Enterprise Webhook Gateway ]                                      |
+|  (Audit Trails to Treasury)     (Discord / Slack Notifications with HMAC-SHA256)                    |
+|                                                                                                     |
++-----------------------------------------------------------------------------------------------------+

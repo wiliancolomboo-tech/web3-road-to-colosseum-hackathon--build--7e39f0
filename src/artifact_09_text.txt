@@ -1,0 +1,5 @@
+Liquidations in DeFi are broken. Treasuries and LPs lose millions every volatile cycle to network spikes, delayed bots, and custodial risks. 
+
+Introducing Aegis Protocol (@AegisVault) — the institutional, non-custodial automated execution & risk mitigation engine on @solana. 🛡️⚡
+
+Built for the @Colosseum #Solana Hackathon 🧵👇

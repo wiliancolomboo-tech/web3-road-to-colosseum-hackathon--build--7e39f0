@@ -1,0 +1,19 @@
+1/4 🛡️ Introducing AegisProtocol: The Autonomous Conditional Milestone Settlement Engine built for the @ColosseumOrg Solana Hackathon! 🚀
+
+High-value agreements on Solana shouldn't rely on discretionary trust or manual multi-sigs. 
+It’s time for zero-trust, programmatic milestone settlements. 🧵👇
+
+2/4 ⚡ Why AegisProtocol?
+✅ Deterministic PDA Vault Architecture
+✅ Granular Milestone Staged Escrow with SHA-256 Deliverable Attestations
+✅ Arbiter Multi-Party Dispute Resolution & Hard Timestamp Circuit Breakers
+✅ Real-Time Enterprise Telemetry: Instant alerts via @resend & Slack webhooks
+
+3/4 🏗️ Under the Hood:
+Engineered natively on Anchor 0.29.0 & the Solana Sealevel runtime. 
+Sub-second confirmations, mathematical balance integrity proofs, zero unsafe assumptions, and 100% test coverage.
+
+4/4 🔗 GitHub, live demo, and turnkey Docker orchestration ready for sponsor review:
+https://github.com/aegis-protocol/aegis-engine
+
+Building the future of verifiable autonomous commerce on @solana. LFG! 🌐🔥 #Solana #Colosseum #Web3

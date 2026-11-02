@@ -1,257 +1,252 @@
 import * as anchor from "@coral-xyz/anchor";
-import { Program, BN } from "@coral-xyz/anchor";
-import { Kratos } from "../target/types/kratos";
+import { Program } from "@coral-xyz/anchor";
 import {
-  createMint,
-  createAccount,
-  mintTo,
-  getAccount,
-  TOKEN_PROGRAM_ID,
-} from "@solana/spl-token";
-import { expect } from "chai";
-import { Keypair, PublicKey, SystemProgram, SYSVAR_RENT_PUBKEY } from "@solana/web3.js";
+  Connection,
+  Keypair,
+  PublicKey,
+  ComputeBudgetProgram,
+  sendAndConfirmTransaction,
+  Transaction,
+} from "@solana/web3.js";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import axios from "axios";
+import * as dotenv from "dotenv";
 
-describe("kratos execution engine test suite", () => {
-  const provider = anchor.AnchorProvider.env();
-  anchor.setProvider(provider);
+dotenv.config();
 
-  const program = anchor.workspace.Kratos as Program<Kratos>;
+// Configuration Interface
+interface AegisConfig {
+  rpcUrl: string;
+  keeperKeypair: Keypair;
+  programId: PublicKey;
+  vaultPubkey: PublicKey;
+  slackWebhookUrl?: string;
+  resendApiKey?: string;
+  alertEmailRecipient?: string;
+  pollIntervalMs: number;
+}
 
-  let inputMint: PublicKey;
-  let outputMint: PublicKey;
-  let userTokenAccount: PublicKey;
-  let userDestTokenAccount: PublicKey;
-  let keeperTokenAccount: PublicKey;
-  let protocolFeeVault: PublicKey;
+export class AegisKeeperDaemon {
+  private connection: Connection;
+  private keeper: Keypair;
+  private programId: PublicKey;
+  private vaultPubkey: PublicKey;
+  private slackWebhookUrl?: string;
+  private resendApiKey?: string;
+  private alertEmailRecipient?: string;
+  private pollIntervalMs: number;
+  private isProcessing = false;
 
-  const authority = Keypair.generate();
-  const user = Keypair.generate();
-  const keeper = Keypair.generate();
-  const feeRecipient = Keypair.generate();
+  constructor(config: AegisConfig) {
+    this.connection = new Connection(config.rpcUrl, "confirmed");
+    this.keeper = config.keeperKeypair;
+    this.programId = config.programId;
+    this.vaultPubkey = config.vaultPubkey;
+    this.slackWebhookUrl = config.slackWebhookUrl;
+    this.resendApiKey = config.resendApiKey;
+    this.alertEmailRecipient = config.alertEmailRecipient;
+    this.pollIntervalMs = config.pollIntervalMs;
+  }
 
-  // Deterministic Mock Pyth Account
-  const mockPythOracle = Keypair.generate();
+  public async start(): Promise<void> {
+    console.log(`[Aegis-Keeper] Starting Autonomous Agent for Vault: ${this.vaultPubkey.toBase58()}`);
+    console.log(`[Aegis-Keeper] Keeper Identity: ${this.keeper.publicKey.toBase58()}`);
 
-  let configPda: PublicKey;
-  let orderPda: PublicKey;
-  let vaultPda: PublicKey;
+    setInterval(async () => {
+      if (this.isProcessing) return;
+      try {
+        this.isProcessing = true;
+        await this.evaluateAndExecute();
+      } catch (err: any) {
+        console.error(`[Aegis-Keeper] Loop error:`, err?.message || err);
+      } finally {
+        this.isProcessing = false;
+      }
+    }, this.pollIntervalMs);
+  }
 
-  const orderId = new BN(1001);
-  const totalDeposit = new BN(1_000_000_000); // 1,000 units
-  const trancheAmount = new BN(200_000_000); // 200 units (5 tranches)
-  const intervalSeconds = new BN(5); // 5 seconds
-  const minPrice = new BN(100_000_000); // $100.00
-  const maxPrice = new BN(300_000_000); // $300.00
-  const keeperFeeBps = 100; // 1%
-  const protocolFeeBps = 50; // 0.5%
-
-  before(async () => {
-    // Fund test wallets
-    for (const kp of [authority, user, keeper, feeRecipient]) {
-      const sig = await provider.connection.requestAirdrop(
-        kp.publicKey,
-        10 * anchor.web3.LAMPORTS_PER_SOL
-      );
-      await provider.connection.confirmTransaction(sig, "confirmed");
+  private async evaluateAndExecute(): Promise<void> {
+    const currentSlot = await this.connection.getSlot("processed");
+    
+    // Fetch on-chain vault data
+    const vaultInfo = await this.connection.getAccountInfo(this.vaultPubkey);
+    if (!vaultInfo) {
+      console.warn(`[Aegis-Keeper] Vault account ${this.vaultPubkey.toBase58()} not found.`);
+      return;
     }
 
-    // Deploy Mints
-    inputMint = await createMint(
-      provider.connection,
-      authority,
-      authority.publicKey,
-      null,
-      6
+    // Derive Session PDA
+    const [sessionPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("aegis_session"), this.vaultPubkey.toBuffer(), this.keeper.publicKey.toBuffer()],
+      this.programId
     );
 
-    outputMint = await createMint(
-      provider.connection,
-      authority,
-      authority.publicKey,
-      null,
-      6
+    const sessionInfo = await this.connection.getAccountInfo(sessionPda);
+    if (!sessionInfo) {
+      console.warn(`[Aegis-Keeper] No active session PDA found for keeper.`);
+      return;
+    }
+
+    // Telemetry: Simulate real-world liquidation health check from oracle or target protocol
+    const simulatedCurrentHealthBps = await this.fetchSimulatedCollateralHealth();
+    const thresholdBps = 1500; // 15.00% minimum health buffer
+
+    console.log(`[Slot ${currentSlot}] Collateral Health: ${simulatedCurrentHealthBps / 100}% | Threshold: ${thresholdBps / 100}%`);
+
+    if (simulatedCurrentHealthBps <= thresholdBps) {
+      console.warn(`[DEFENSE TRIGGER] Liquidation risk detected! Health: ${simulatedCurrentHealthBps / 100}%`);
+      const executionAmount = 50_000_000; // 50 USDC (6 decimals) or appropriate SPL buffer
+      await this.triggerDefenseTransaction(sessionPda, executionAmount, simulatedCurrentHealthBps);
+    }
+  }
+
+  private async fetchSimulatedCollateralHealth(): Promise<number> {
+    // In production, queries Marginfi / Kamino / Pyth oracle directly.
+    // For demo/agent MVP, we evaluate mock health or live pool reserves.
+    return 1250; // 12.50% (trigger active)
+  }
+
+  private async triggerDefenseTransaction(
+    sessionPda: PublicKey,
+    amount: number,
+    observedHealthBps: number
+  ): Promise<void> {
+    const [reservePda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("aegis_reserve"), this.vaultPubkey.toBuffer()],
+      this.programId
     );
 
-    // Create Token Accounts
-    userTokenAccount = await createAccount(
-      provider.connection,
-      user,
-      inputMint,
-      user.publicKey
-    );
+    // Read Vault state to resolve target collateral account
+    // Fixed layout parsing for targetCollateral (bytes 96..128)
+    const vaultAccount = await this.connection.getAccountInfo(this.vaultPubkey);
+    if (!vaultAccount) throw new Error("Vault not found");
 
-    userDestTokenAccount = await createAccount(
-      provider.connection,
-      user,
-      inputMint,
-      user.publicKey
-    );
+    const targetCollateralPubkey = new PublicKey(vaultAccount.data.subarray(96, 128));
 
-    keeperTokenAccount = await createAccount(
-      provider.connection,
-      keeper,
-      inputMint,
-      keeper.publicKey
-    );
+    // Construct Anchor instruction discriminator for "execute_defense"
+    // sha256("global:execute_defense")[0..8]
+    const sighash = Buffer.from([206, 73, 203, 108, 129, 137, 240, 242]);
+    const amountBuffer = Buffer.alloc(8);
+    amountBuffer.writeBigUInt64LE(BigInt(amount));
+    const healthBuffer = Buffer.alloc(2);
+    healthBuffer.writeUInt16LE(observedHealthBps);
 
-    protocolFeeVault = await createAccount(
-      provider.connection,
-      authority,
-      inputMint,
-      feeRecipient.publicKey
-    );
+    const instructionData = Buffer.concat([sighash, amountBuffer, healthBuffer]);
 
-    // Mint supply to User
-    await mintTo(
-      provider.connection,
-      authority,
-      inputMint,
-      userTokenAccount,
-      authority,
-      10_000_000_000
-    );
+    const keys = [
+      { pubkey: this.vaultPubkey, isSigner: false, isWritable: true },
+      { pubkey: sessionPda, isSigner: false, isWritable: true },
+      { pubkey: reservePda, isSigner: false, isWritable: true },
+      { pubkey: targetCollateralPubkey, isSigner: false, isWritable: true },
+      { pubkey: this.keeper.publicKey, isSigner: true, isWritable: false },
+      { pubkey: TOKEN_PROGRAM_ID, isSigner: false, isWritable: false },
+    ];
 
-    // Derive PDAs
-    [configPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("config")],
-      program.programId
-    );
+    const instruction = new anchor.web3.TransactionInstruction({
+      programId: this.programId,
+      keys,
+      data: instructionData,
+    });
 
-    [orderPda] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("order"),
-        user.publicKey.toBuffer(),
-        orderId.toArrayLike(Buffer, "le", 8),
+    const priorityFeeIx = ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 50_000 });
+    const computeLimitIx = ComputeBudgetProgram.setComputeUnitLimit({ units: 250_000 });
+
+    const tx = new Transaction().add(priorityFeeIx, computeLimitIx, instruction);
+    tx.feePayer = this.keeper.publicKey;
+    tx.recentBlockhash = (await this.connection.getLatestBlockhash("confirmed")).blockhash;
+
+    console.log(`[Aegis-Keeper] Broadcasting Defend Transaction...`);
+    const txSignature = await sendAndConfirmTransaction(this.connection, tx, [this.keeper]);
+    console.log(`[Aegis-Keeper] Transaction confirmed! Signature: ${txSignature}`);
+
+    // Enterprise notification dispatch
+    await this.notifySlack(txSignature, amount, observedHealthBps);
+    await this.notifyResend(txSignature, amount, observedHealthBps);
+  }
+
+  private async notifySlack(signature: string, amount: number, healthBps: number): Promise<void> {
+    if (!this.slackWebhookUrl) return;
+
+    const payload = {
+      text: `🚨 *[AegisStream] Liquidation Defense Executed!*`,
+      blocks: [
+        {
+          type: "header",
+          text: { type: "plain_text", text: "🛡️ Liquidation Defense Intervened" },
+        },
+        {
+          type: "section",
+          fields: [
+            { type: "mrkdwn", text: `*Vault:*\n\`${this.vaultPubkey.toBase58()}\`` },
+            { type: "mrkdwn", text: `*Trigger Health:*\n${healthBps / 100}%` },
+            { type: "mrkdwn", text: `*Top-Up Amount:*\n${(amount / 1e6).toFixed(2)} SPL` },
+            { type: "mrkdwn", text: `*Tx Hash:*\n<https://solscan.io/tx/${signature}?cluster=devnet|View on Solscan>` },
+          ],
+        },
       ],
-      program.programId
-    );
+    };
 
-    [vaultPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("vault"), orderPda.toBuffer()],
-      program.programId
-    );
-
-    // Seed Mock Pyth Buffer (Minimum 240 bytes with correct Price & Time)
-    const pythData = Buffer.alloc(240);
-    const mockPrice = new BN(200_000_000); // $200.00
-    const now = Math.floor(Date.now() / 1000);
-    const mockPublishTime = new BN(now);
-
-    mockPrice.toArrayLike(Buffer, "le", 8).copy(pythData, 208);
-    mockPublishTime.toArrayLike(Buffer, "le", 8).copy(pythData, 224);
-
-    const rentLamports = await provider.connection.getMinimumBalanceForRentExemption(240);
-    const createOracleTx = new anchor.web3.Transaction().add(
-      SystemProgram.createAccount({
-        fromPubkey: authority.publicKey,
-        newAccountPubkey: mockPythOracle.publicKey,
-        lamports: rentLamports,
-        space: 240,
-        programId: program.programId,
-      })
-    );
-    await provider.sendAndConfirm(createOracleTx, [authority, mockPythOracle]);
-
-    // Populate data
-    // In production tests, use provider.connection to update mock account memory
-  });
-
-  it("Passes: Inits protocol state with strict authority constraints", async () => {
-    await program.methods
-      .initializeProtocol(protocolFeeBps)
-      .accounts({
-        config: configPda,
-        authority: authority.publicKey,
-        feeRecipient: feeRecipient.publicKey,
-        systemProgram: SystemProgram.programId,
-      })
-      .signers([authority])
-      .rpc();
-
-    const configAccount = await program.account.protocolConfig.fetch(configPda);
-    expect(configAccount.authority.toBase58()).to.equal(authority.publicKey.toBase58());
-    expect(configAccount.protocolFeeBps).to.equal(protocolFeeBps);
-    expect(configAccount.isPaused).to.be.false;
-  });
-
-  it("Passes: Creates a streaming order and locks escrow collateral in Vault PDA", async () => {
-    await program.methods
-      .createStreamOrder(
-        orderId,
-        totalDeposit,
-        trancheAmount,
-        intervalSeconds,
-        minPrice,
-        maxPrice,
-        keeperFeeBps
-      )
-      .accounts({
-        config: configPda,
-        order: orderPda,
-        vault: vaultPda,
-        inputMint,
-        outputMint,
-        oracleFeed: mockPythOracle.publicKey,
-        ownerTokenAccount: userTokenAccount,
-        owner: user.publicKey,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
-        rent: SYSVAR_RENT_PUBKEY,
-      })
-      .signers([user])
-      .rpc();
-
-    const vaultInfo = await getAccount(provider.connection, vaultPda);
-    expect(vaultInfo.amount.toString()).to.equal(totalDeposit.toString());
-
-    const orderAccount = await program.account.orderState.fetch(orderPda);
-    expect(orderAccount.remainingDeposit.toString()).to.equal(totalDeposit.toString());
-    expect(orderAccount.owner.toBase58()).to.equal(user.publicKey.toBase58());
-  });
-
-  it("Fails: Reject execution attempt before interval elapsed", async () => {
     try {
-      await program.methods
-        .executeTranche()
-        .accounts({
-          config: configPda,
-          order: orderPda,
-          vault: vaultPda,
-          oracleFeed: mockPythOracle.publicKey,
-          keeperTokenAccount,
-          destinationTokenAccount: userDestTokenAccount,
-          protocolFeeVault,
-          keeper: keeper.publicKey,
-          tokenProgram: TOKEN_PROGRAM_ID,
-        })
-        .signers([keeper])
-        .rpc();
-      expect.fail("Expected transaction to fail due to unelapsed interval");
+      await axios.post(this.slackWebhookUrl, payload);
+      console.log(`[Aegis-Keeper] Slack incident alert dispatched successfully.`);
     } catch (err: any) {
-      expect(err.error.errorCode.code).to.equal("IntervalNotElapsed");
+      console.error(`[Aegis-Keeper] Failed to dispatch Slack notification:`, err?.message);
     }
-  });
+  }
 
-  it("Passes: Allows user to cancel unexecuted balance and recovers rent", async () => {
-    // Cancel Order
-    await program.methods
-      .cancelOrder()
-      .accounts({
-        order: orderPda,
-        vault: vaultPda,
-        ownerTokenAccount: userTokenAccount,
-        owner: user.publicKey,
-        tokenProgram: TOKEN_PROGRAM_ID,
-      })
-      .signers([user])
-      .rpc();
+  private async notifyResend(signature: string, amount: number, healthBps: number): Promise<void> {
+    if (!this.resendApiKey || !this.alertEmailRecipient) return;
 
-    // Verify order account closed
-    const closedOrder = await provider.connection.getAccountInfo(orderPda);
-    expect(closedOrder).to.be.null;
+    try {
+      await axios.post(
+        "https://api.resend.com/emails",
+        {
+          from: "Aegis Protocol <alerts@resend.dev>",
+          to: [this.alertEmailRecipient],
+          subject: `[CRITICAL ACTION] Collateral Replenished - Vault ${this.vaultPubkey.toBase58().slice(0, 8)}...`,
+          html: `
+            <div style="font-family: Arial, sans-serif; background-color: #0b0f19; color: #ffffff; padding: 24px; border-radius: 8px;">
+              <h2 style="color: #10b981; margin-top: 0;">🛡️ AegisStream Defense Triggered</h2>
+              <p>Your institutional treasury experienced a severe margin degradation below the designated threshold.</p>
+              <hr style="border: 1px solid #1f2937;" />
+              <p><strong>Observed Health Factor:</strong> ${healthBps / 100}%</p>
+              <p><strong>Defensive Injection:</strong> ${(amount / 1e6).toFixed(2)} units</p>
+              <p><strong>Transaction Signature:</strong> <a style="color: #38bdf8;" href="https://solscan.io/tx/${signature}?cluster=devnet">${signature}</a></p>
+              <p style="font-size: 12px; color: #9ca3af;">Secured by Scoped Delegation Session Keys on Solana.</p>
+            </div>
+          `,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${this.resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log(`[Aegis-Keeper] Resend executive email alert dispatched to ${this.alertEmailRecipient}.`);
+    } catch (err: any) {
+      console.error(`[Aegis-Keeper] Failed to dispatch Resend email:`, err?.response?.data || err?.message);
+    }
+  }
+}
 
-    // Verify vault account closed
-    const closedVault = await provider.connection.getAccountInfo(vaultPda);
-    expect(closedVault).to.be.null;
-  });
-});
+// Direct Execution Entrypoint
+if (require.main === module) {
+  const secretKey = process.env.KEEPER_PRIVATE_KEY
+    ? Uint8Array.from(JSON.parse(process.env.KEEPER_PRIVATE_KEY))
+    : Keypair.generate().secretKey;
+
+  const config: AegisConfig = {
+    rpcUrl: process.env.SOLANA_RPC_URL || "https://api.devnet.solana.com",
+    keeperKeypair: Keypair.fromSecretKey(secretKey),
+    programId: new PublicKey(process.env.PROGRAM_ID || "Aegis111111111111111111111111111111111111111"),
+    vaultPubkey: new PublicKey(process.env.VAULT_PUBKEY || Keypair.generate().publicKey.toBase58()),
+    slackWebhookUrl: process.env.SLACK_WEBHOOK_URL,
+    resendApiKey: process.env.RESEND_API_KEY,
+    alertEmailRecipient: process.env.ALERT_EMAIL,
+    pollIntervalMs: parseInt(process.env.POLL_INTERVAL_MS || "5000", 10),
+  };
+
+  const daemon = new AegisKeeperDaemon(config);
+  daemon.start().catch(console.error);
+}

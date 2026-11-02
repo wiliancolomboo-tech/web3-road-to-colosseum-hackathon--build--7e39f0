@@ -1,0 +1,1 @@
+docker logs -f solaegis-sentinel-daemon

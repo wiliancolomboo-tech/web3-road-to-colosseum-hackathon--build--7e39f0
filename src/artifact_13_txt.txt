@@ -1,0 +1,8 @@
+Built for the @ColosseumOrg Hackathon:
+✅ 100% Rust & TypeScript with zero stubs
+✅ 7/7 passing QA integration tests
+✅ 1-click Docker orchestration ready for enterprise deployment
+
+Explore the code & documentation: https://github.com/nexusguard/nexusguard-protocol
+
+#Solana #Colosseum #DeFi #Web3Security

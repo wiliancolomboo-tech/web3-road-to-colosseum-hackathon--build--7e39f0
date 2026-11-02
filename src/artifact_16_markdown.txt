@@ -1,0 +1,16 @@
+🧵 1/3
+Thrilled to unveil AegisVault for the @Colosseum #Solana Hackathon! 🛡️⚡
+
+DeFi Treasuries & traders lose millions to market flash-crashes and toxic liquidations. AegisVault solves this with an autonomous, intent-based risk-hedging vault engine powered by Anchor on Solana.
+
+🧵 2/3
+What makes AegisVault different?
+✅ Trustless, rent-exempt PDA vaults that eliminate static collateral drag.
+✅ Incentive-aligned keeper network with anti-front-running slot validation.
+✅ Real-time incident telemetry: Instant receipts via @resend and SecOps alerts via Discord webhooks.
+
+🧵 3/3
+Complete MVP is live with 100% test coverage, verifiable Anchor smart contracts, and 1-click Dockerized keeper daemons. 
+
+Check out our repository & join the new standard of autonomous on-chain risk management on @solana! 🚀
+#SolanaDev #Colosseum #DeFi #Web3

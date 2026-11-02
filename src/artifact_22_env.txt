@@ -1,0 +1,16 @@
+# Solana RPC Endpoints
+SOLANA_RPC_URL=https://api.devnet.solana.com
+PROGRAM_ID=ChronoGuard111111111111111111111111111111111
+POLL_INTERVAL_MS=3000
+
+# Operator Keys (JSON Array format)
+KEEPER_PRIVATE_KEY=[0,0,0,0...]
+
+# Enterprise Telemetry Integrations
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789abcdef
+EXECUTIVE_NOTIFICATION_EMAIL=treasury-security@enterprise.com
+
+# Testing & Emulation
+MOCK_TRIGGER_BROADCAST=false

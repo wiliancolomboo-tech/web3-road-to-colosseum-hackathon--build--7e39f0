@@ -1,0 +1,1 @@
+docker logs -f sentinel_automation_daemon --tail 50

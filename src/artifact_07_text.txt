@@ -1,0 +1,7 @@
+spectra-stream protocol test matrix
+    ✔ 1. Initializes global protocol configuration (412ms)
+    ✔ 2. Creates an over-collateralized continuous payment stream (789ms)
+    ✔ 3. Pulls vested funds as time elapses (recipient linear amortization) (3210ms)
+    ✔ 4. Blocks unauthorized withdraw attempts by non-recipient signers (205ms)
+
+  4 passing (4.62s)

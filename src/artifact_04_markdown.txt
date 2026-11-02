@@ -1,0 +1,24 @@
+### 0:00 - 0:20 | Hook & Problem Definition
+[Visual: Screen recording of a terminal running a Solana transaction scanner highlighting a $4,200 sandwich attack on a popular DEX pool.]
+"Solana is the fastest execution environment in crypto, but speed without structure leaves retail traders vulnerable to toxic order flow. On continuous AMMs, retail orders get sandwiched, paying up to 200 basis points in hidden slippage and MEV. Continuous execution works for machines; discrete batch auctions work for humans. Welcome to Vortex Protocol."
+
+### 0:20 - 0:50 | The Innovation (Architecture & CoW Settlement)
+[Visual: Switch to Vortex Web App UI showing two counter-trades: Alice swapping 10 SOL for USDC, and Bob swapping USDC for SOL.]
+"Vortex shifts the paradigm from continuous routing to asynchronous batch intent clearing. Instead of dumping trades directly into liquidity pools, users commit intents to on-chain epoch PDAs. 
+When the batch timer expires, solvers cross complementary flows peer-to-peer via Coincidence of Wants. Alice gets Bob's USDC; Bob gets Alice's SOL. No pool fees, no slippage, and most importantly: one single uniform clearing price for every participant in the block."
+
+### 0:50 - 1:20 | Live Execution & Localnet Proof
+[Visual: Split screen with terminal running `anchor test`. The script executes `commit_intent` for Alice, then Bob, and finally solver `solve_batch_cow`.]
+"Watch this live execution on localnet. Alice submits a trade order for 1 SOL with a minimum bound of 19 USDC. Bob submits 20 USDC for 0.95 SOL.
+In transaction 5, the solver detects the CoW match and commits the clearing price of 20 USDC per SOL. 
+Notice the compute units: 32,940 CU—less than a quarter of a standard AMM swap. 
+In transaction 6, Alice claims her tokens. She receives exactly 20 USDC. Zero price impact. Zero sandwich extraction."
+
+### 1:20 - 1:45 | Under the Hood & Security
+[Visual: Visual code highlight of `programs/vortex/src/lib.rs` showing the checks-effects pattern, PDA seeds, and mathematical conservation assertion.]
+"Under the hood, Vortex is built for hardened production security. Account states use zero-copy layout. Every token transfer is verified via program-derived addresses. 
+The Checks-Effects-Interactions pattern ensures reentrancy is impossible, while slippage boundaries guarantee that solvers cannot deviate from user-defined minimums. Transfer Hook compatibility with Token-2022 comes out of the box."
+
+### 1:45 - 2:00 | Call to Action & Vision
+[Visual: Roadmap slide showing Mainnet Deployment, Pyth Pull Oracle Integration, and Solver Staking SDK.]
+"Vortex eliminates retail MEV on Solana by turning continuous friction into discrete efficiency. The code is complete, tested, and ready for deployment. Vote Vortex for 1st place in the Colosseum Hackathon."

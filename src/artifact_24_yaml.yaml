@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  streamsentry-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: streamsentry-daemon
+    restart: always
+    environment:
+      - PROGRAM_ID=StrmSentry111111111111111111111111111111111
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - SOLANA_WS_URL=wss://api.devnet.solana.com
+      - RESEND_API_KEY=${RESEND_API_KEY:-mock_key}
+      - NOTIFICATION_FROM_EMAIL=alerts@streamsentry.io
+      - PAYROLL_RECIPIENT_EMAIL=ops@company.xyz
+      - DISCORD_SLACK_WEBHOOK_URL=${DISCORD_SLACK_WEBHOOK_URL:-}
+      - LOG_LEVEL=info
+    healthcheck:
+      test: ["CMD-SHELL", "node -e 'process.exit(0)'"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

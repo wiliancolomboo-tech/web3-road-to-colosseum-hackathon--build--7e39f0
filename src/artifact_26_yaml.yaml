@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  sentinel-automation-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sentinel_automation_daemon
+    restart: always
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - SOLANA_WS_URL=wss://api.devnet.solana.com
+      - PROGRAM_ID=SentF1ow11111111111111111111111111111111111
+      - RESEND_API_KEY=re_live_enterprise_placeholder_key
+      - RESEND_SENDER_EMAIL=treasury@sentinelflow.io
+      - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - TREASURY_NOTIFICATION_EMAIL=audit@enterprise.xyz
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"

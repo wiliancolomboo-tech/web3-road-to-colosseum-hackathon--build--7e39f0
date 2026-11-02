@@ -1,0 +1,8 @@
+aegis-perp MVP End-to-End Test Suite
+    ✔ 1. Successfully initializes the Perpetual Market PDA & Vault (421ms)
+    ✔ 2. Deposits collateral into Trader Position PDA (289ms)
+    ✔ 3. Opens a leveraged Long position with fresh oracle signature (310ms)
+    ✔ 4. Blocks stale oracle transactions beyond tolerance (195ms)
+    ✔ 5. Liquidates trader when mark price drops below maintenance margin (340ms)
+
+  5 passing (2s)

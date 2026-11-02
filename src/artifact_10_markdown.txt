@@ -1,0 +1,18 @@
+1/3 🛡️ Introducing @SentinelVault for the @ColosseumOrg Solana Hackathon! 
+
+Institutional DeFi treasuries face a massive security blindspot: centralized, custodial stop-loss bots and unverified MEV execution leaks. 
+
+We built the first non-custodial, programmable Intent Vault on Solana. 🧵👇
+
+2/3 ⚡ Under the hood:
+• Deterministic PDA-isolated smart vault state machines in @AnchorLang
+• Oracle-bounded conditional execution (Stop-Loss & Take-Profit)
+• Decentralized crank bounties eliminating centralized bot single-points-of-failure
+• Real-time enterprise alerts via @resend and Slack webhooks!
+
+3/3 🚀 Turnkey, audited math, 100% test assertions passed, and ready for production institutional deployment. 
+
+Check out the open-source repo & join the next generation of autonomous Solana DeFi: 
+github.com/sentinel-vault/sentinel-protocol
+
+#Solana #ColosseumHackathon #DeFi #Rust #Anchor

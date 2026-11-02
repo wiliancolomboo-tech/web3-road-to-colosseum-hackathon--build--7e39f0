@@ -1,0 +1,23 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /usr/src/app
+COPY packages/agent-keeper/package*.json ./
+RUN npm ci
+
+COPY packages/agent-keeper/ ./
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /usr/src/app
+
+ENV NODE_ENV=production
+COPY packages/agent-keeper/package*.json ./
+RUN npm ci --only=production
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+USER node
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:8080/health', (r) => {if (r.statusCode !== 200) process.exit(1);});"
+
+CMD ["node", "dist/index.js"]

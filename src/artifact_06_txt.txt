@@ -1,17 +1,6 @@
-+-----------------------------+-------------------------------------------------------+-----------------------------------------------+
-| Threat / Vulnerability      | Mitigation Vector                                     | On-Chain Implementation Logic                 |
-+=============================+=======================================================+===============================================+
-| MEV Sandwich Attacks        | Pyth Staleness + Min/Max Absolute Bounded Thresholds  | require!(staleness <= 30 && staleness >= -5)  |
-|                             |                                                       | require!(price >= min && price <= max)        |
-+-----------------------------+-------------------------------------------------------+-----------------------------------------------+
-| PDA Vault Spoofing          | Cryptographic Canonical Bump Storage & Validation     | seeds = [VAULT_SEED, order.key().as_ref()]   |
-|                             |                                                       | Vault derived directly from canonical Order   |
-+-----------------------------+-------------------------------------------------------+-----------------------------------------------+
-| Reentrancy via Drain Loops  | Checks-Effects-Interactions (CEI) State Mutations     | order.remaining_deposit = remaining - chunk;  |
-|                             |                                                       | State update MUST commit before token CPI     |
-+-----------------------------+-------------------------------------------------------+-----------------------------------------------+
-| Arithmetic Over/Underflow   | Checked Safe Math Enforced Everywhere                | checked_sub(), checked_mul(), checked_div()   |
-+-----------------------------+-------------------------------------------------------+-----------------------------------------------+
-| Malicious Authority Drain   | Absolute Protocol Fee Capping                         | require!(fee_bps <= 500, FeeTooHigh)          |
-|                             |                                                       | Keeper fees hard-capped at 250 bps max        |
-+-----------------------------+-------------------------------------------------------+-----------------------------------------------+
+client/
+├── package.json
+├── tsconfig.json
+├── src/
+│   ├── telemetry.ts
+│   └── agentWorker.ts

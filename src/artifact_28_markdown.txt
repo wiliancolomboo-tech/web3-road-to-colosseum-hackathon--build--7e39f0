@@ -1,0 +1,21 @@
+🧵 1/3
+Thrilled to unveil our MVP for the @Colosseum #Solana Hackathon:
+⚡ NexusStream Protocol (@NexusStream) ⚡
+
+Autonomous AI agents & global workforces need trustless, real-time settlement rails.
+NexusStream combines sub-second Anchor escrows with cryptographic deliverable verification on Solana. 🚀
+
+🧵 2/3
+How it works under the hood:
+🔒 Deterministic Escrow PDAs lock funds with configurable SLA timeouts
+🔍 SHA-256 deliverable hashing & Ed25519 attestations
+🤖 "Nexus Sentinel" automation daemon bridges on-chain releases to enterprise workflows (@resend for CFO audit emails & Discord alert channels)
+
+🧵 3/3
+No more manual escrow disputes or blind treasuries. Built natively for high-velocity agentic economies on @solana.
+
+Complete Anchor contract + CLI daemon + 100% test coverage ready:
+👉 GitHub: https://github.com/nexus-stream/nexus-stream-protocol
+👉 Live MVP Demo: https://nexus-stream.devnet.solana.com
+
+LFG @Colosseum! 🔥

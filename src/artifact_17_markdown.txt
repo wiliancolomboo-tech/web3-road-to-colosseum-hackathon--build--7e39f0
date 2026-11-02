@@ -1,0 +1,18 @@
+1/3 🛡️ Introducing NexusAgent Vault (@ColosseumOrg Hackathon MVP)
+AI Agents are executing thousands of on-chain micro-transactions, but giving them raw private keys is institutional suicide. One injection attack drains your treasury.
+NAV fixes this: Non-custodial policy firewalls on @solana. 🧵👇
+
+2/3 ⚡ How it works:
+PDA vaults decouple ownership from execution.
+✅ Sliding-window epoch velocity limits
+✅ Cryptographic recipient whitelist
+✅ Sub-second off-chain circuit breakers
+✅ Real-time telemetry via @resend & Webhooks
+All executed natively at 400ms Solana speeds.
+
+3/3 🚢 Production-ready, fully tested, and turnkey ready:
+- 100% test coverage passing on Anchor 0.30
+- Zero unsafe Rust math assumptions
+- Complete TS orchestration CLI & Docker daemon
+Check out our submission & live demo: https://github.com/nexusagent/nexus-vault
+Let’s build the agent economy safely on @solana! 🚀

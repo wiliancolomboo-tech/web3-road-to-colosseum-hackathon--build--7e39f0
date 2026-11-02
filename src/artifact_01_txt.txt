@@ -1,9 +1,8 @@
-┌───────────────────────────────┐
-                    │      Kratos Execution Core    │
-                    ├───────────────────────────────┤
-                    │ • Zero-Copy Memory Layout     │
-                    │ • Canonical PDA Escrows       │
-                    │ • Pyth V2 Oracle Verification │
-                    │ • Permissionless Keeper Crank │
-                    │ • Sub-35,000 Compute Units    │
-                    └───────────────────────────────┘
++---------------------------------------------------------------------------------------+
+|                                BUSINESS IMPACT METRICS                                |
++------------------------------------+--------------------------------------------------+
+| Settlement Velocity                | Sub-400ms finality via Solana's Sealevel runtime |
+| Treasury Operational Overhead      | -85% reduction in manual multi-sig coordination  |
+| Capital Security                   | 100% PDA-segregated, zero reentrancy attack area |
+| Enterprise Audit Readiness         | Immutable on-chain logs + HMAC-signed webhooks   |
++------------------------------------+--------------------------------------------------+

@@ -1,0 +1,21 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /usr/src/app
+COPY services/automation/package*.json ./
+RUN npm ci
+
+COPY services/automation/tsconfig.json ./
+COPY services/automation/src ./src
+RUN npm run build
+
+FROM node:20-alpine AS runner
+WORKDIR /app
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY services/automation/package.json ./
+
+ENV NODE_ENV=production
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD node -e "process.exit(0)"
+
+CMD ["node", "dist/index.js"]

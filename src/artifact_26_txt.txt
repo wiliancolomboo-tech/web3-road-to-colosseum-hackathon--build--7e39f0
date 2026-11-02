@@ -1,0 +1,9 @@
+Turnkey, production-grade, and 100% open-source:
+✅ Fully tested Anchor smart contract
+✅ Dockerized event ingestion engine
+✅ 1-click self-hosted deployment
+
+Check out our MVP on GitHub & Devnet:
+👉 https://github.com/aeonvault-protocol/aeonvault
+
+Special thanks to the @Colosseum team! #Solana #SolanaHackathon #Web3

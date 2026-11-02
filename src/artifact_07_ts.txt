@@ -1,0 +1,178 @@
+import "dotenv/config";
+import express from "express";
+import crypto from "node:crypto";
+import Database from "better-sqlite3";
+import { Connection, PublicKey } from "@solana/web3.js";
+import { Resend } from "resend";
+
+const RPC_URL = process.env.RPC_URL ?? "https://api.devnet.solana.com";
+const PROGRAM_ID = new PublicKey(process.env.PROGRAM_ID!);
+const POLL_MS = Number(process.env.POLL_MS ?? 5000);
+const PORT = Number(process.env.PORT ?? 8080);
+const WEBHOOK_URL = process.env.WEBHOOK_URL;
+const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const ALERT_EMAIL = process.env.ALERT_EMAIL;
+const FROM_EMAIL = process.env.FROM_EMAIL ?? "ProofRelay <noreply@example.com>";
+
+const connection = new Connection(RPC_URL, "confirmed");
+const db = new Database(process.env.DB_PATH ?? "proofrelay.db");
+const resend = RESEND_API_KEY ? new Resend(RESEND_API_KEY) : undefined;
+
+db.exec(`
+  CREATE TABLE IF NOT EXISTS processed_events (
+    event_key TEXT PRIMARY KEY,
+    escrow TEXT NOT NULL,
+    status TEXT NOT NULL,
+    observed_at INTEGER NOT NULL
+  )
+`);
+
+const health = {
+  startedAt: Date.now(),
+  lastPollAt: 0,
+  lastError: null as string | null
+};
+
+function sha256(input: string): string {
+  return crypto.createHash("sha256").update(input).digest("hex");
+}
+
+async function notify(payload: Record<string, unknown>) {
+  const body = JSON.stringify({
+    version: 1,
+    emittedAt: new Date().toISOString(),
+    ...payload
+  });
+
+  if (WEBHOOK_URL) {
+    const signature = crypto
+      .createHmac("sha256", WEBHOOK_SECRET ?? "")
+      .update(body)
+      .digest("hex");
+
+    const response = await fetch(WEBHOOK_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-proofrelay-signature": `sha256=${signature}`
+      },
+      body
+    });
+
+    if (!response.ok) {
+      throw new Error(`Webhook returned ${response.status}`);
+    }
+  }
+
+  if (resend && ALERT_EMAIL) {
+    await resend.emails.send({
+      from: FROM_EMAIL,
+      to: ALERT_EMAIL,
+      subject: `ProofRelay escrow ${payload.status}`,
+      text: body
+    });
+  }
+}
+
+function decodeEscrow(data: Buffer) {
+  // Anchor account layout:
+  // discriminator 8
+  // buyer 32
+  // provider 32
+  // escrow_id 8
+  // amount 8
+  // deadline 8
+  // title: u32 + bytes
+  // hash 32
+  // enum 1
+  // bump 1
+  let o = 8;
+  const buyer = new PublicKey(data.subarray(o, o + 32)).toBase58(); o += 32;
+  const provider = new PublicKey(data.subarray(o, o + 32)).toBase58(); o += 32;
+  const escrowId = data.readBigUInt64LE(o); o += 8;
+  const amountLamports = data.readBigUInt64LE(o); o += 8;
+  const deadline = data.readBigInt64LE(o); o += 8;
+  const titleLength = data.readUInt32LE(o); o += 4;
+  const title = data.subarray(o, o + titleLength).toString("utf8"); o += titleLength;
+  const deliverableHash = data.subarray(o, o + 32).toString("hex"); o += 32;
+  const statusCode = data.readUInt8(o);
+
+  const statuses = ["Initialized", "Funded", "Submitted", "Released", "Refunded"];
+
+  return {
+    buyer,
+    provider,
+    escrowId: escrowId.toString(),
+    amountLamports: amountLamports.toString(),
+    deadline: deadline.toString(),
+    title,
+    deliverableHash,
+    status: statuses[statusCode] ?? "Unknown"
+  };
+}
+
+async function poll() {
+  health.lastPollAt = Date.now();
+
+  const accounts = await connection.getProgramAccounts(PROGRAM_ID, {
+    commitment: "confirmed"
+  });
+
+  for (const account of accounts) {
+    try {
+      const escrow = decodeEscrow(account.account.data);
+      const eventKey = sha256(`${account.pubkey.toBase58()}:${escrow.status}`);
+
+      const exists = db
+        .prepare("SELECT event_key FROM processed_events WHERE event_key = ?")
+        .get(eventKey);
+
+      if (exists) continue;
+
+      await notify({
+        event: "escrow.status_changed",
+        escrowAddress: account.pubkey.toBase58(),
+        ...escrow
+      });
+
+      db.prepare(`
+        INSERT INTO processed_events(event_key, escrow, status, observed_at)
+        VALUES (?, ?, ?, ?)
+      `).run(
+        eventKey,
+        account.pubkey.toBase58(),
+        escrow.status,
+        Date.now()
+      );
+    } catch (error) {
+      health.lastError = error instanceof Error ? error.message : String(error);
+      console.error("poll item failed", error);
+    }
+  }
+}
+
+const app = express();
+
+app.get("/healthz", (_req, res) => {
+  const stale = Date.now() - health.lastPollAt > Math.max(POLL_MS * 3, 30000);
+  res.status(stale || health.lastError ? 503 : 200).json({
+    ok: !stale && !health.lastError,
+    rpc: RPC_URL,
+    programId: PROGRAM_ID.toBase58(),
+    ...health
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`ProofRelay worker listening on :${PORT}`);
+});
+
+setInterval(() => {
+  poll().catch((error) => {
+    health.lastError = error instanceof Error ? error.message : String(error);
+    console.error("poll failed", error);
+  });
+}, POLL_MS);
+
+poll().catch(console.error);

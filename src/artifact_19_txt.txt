@@ -1,0 +1,5 @@
+Announcing AEGIS Protocol for the @Colosseum Hackathon 🛡️🌊
+
+Web3 treasuries manage billions, yet payouts still rely on static, risky token locks without clawback protections or live observability.
+
+We built AEGIS: continuous linear streaming with on-chain circuit breakers on @solana. 🧵👇

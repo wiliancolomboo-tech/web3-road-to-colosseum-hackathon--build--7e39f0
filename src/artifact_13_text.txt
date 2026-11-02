@@ -1,0 +1,4 @@
+Under the hood of AegisStream:
+⏱ Second-by-second linear vesting computed deterministically via Clock sysvars
+🔒 Program-Derived Addresses (PDAs) with non-custodial clawback & dispute mitigation
+📬 Enterprise telemetry: Automated Discord/Slack dispatches & @resend receipts for accountants.

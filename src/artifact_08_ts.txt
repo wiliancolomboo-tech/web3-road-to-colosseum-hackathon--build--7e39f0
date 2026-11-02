@@ -1,0 +1,16 @@
+// worker/src/hash.ts
+import fs from "node:fs";
+import crypto from "node:crypto";
+
+const file = process.argv[2];
+if (!file) {
+  console.error("Usage: npm run hash -- ./deliverable.zip");
+  process.exit(1);
+}
+
+const digest = crypto
+  .createHash("sha256")
+  .update(fs.readFileSync(file))
+  .digest("hex");
+
+console.log(digest);

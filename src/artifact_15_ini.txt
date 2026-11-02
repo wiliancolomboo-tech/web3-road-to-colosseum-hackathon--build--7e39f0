@@ -1,0 +1,9 @@
+# Solana Network Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_WSS_URL=wss://api.devnet.solana.com
+PROGRAM_ID=Aegis111111111111111111111111111111111111111
+
+# Enterprise Telemetry Adapters
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789_abcdefghijklmnopqrstuvwxyz
+ALERT_EMAIL_RECIPIENT=finance-ops@enterprise.corp

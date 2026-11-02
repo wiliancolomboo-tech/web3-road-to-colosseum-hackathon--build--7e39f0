@@ -1,0 +1,6 @@
+PORT=8080
+SOLANA_RPC_URL=https://api.devnet.solana.com
+CHRONOGUARD_PROGRAM_ID=ChronoGuard1111111111111111111111111111111111
+RESEND_API_KEY=re_123456789abcdef
+AUDIT_EMAIL_TO=treasury-audits@company.com
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder

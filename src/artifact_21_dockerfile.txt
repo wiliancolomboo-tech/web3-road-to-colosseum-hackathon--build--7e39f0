@@ -1,0 +1,26 @@
+FROM node:20-slim AS builder
+
+WORKDIR /usr/src/app
+
+COPY client/package*.json ./
+RUN npm ci
+
+COPY client/tsconfig.json ./
+COPY client/src ./src
+RUN npm run build
+
+FROM node:20-slim AS runner
+
+WORKDIR /usr/src/app
+
+COPY --from=builder /usr/src/app/package*.json ./
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/dist ./dist
+
+ENV NODE_ENV=production
+ENV SOLANA_RPC_URL=https://api.devnet.solana.com
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD node -e "require('net').connect(8080, '127.0.0.1').on('error', () => process.exit(1)).on('connect', () => process.exit(0))" || exit 0
+
+CMD ["node", "dist/sentinel.js"]

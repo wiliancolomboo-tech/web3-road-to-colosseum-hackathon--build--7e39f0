@@ -1,0 +1,14 @@
+1/3 🌊 Introducing @VortexProtocol: The Autonomous Milestone Escrow & Streaming Engine built for the @ColosseumOrg Solana Hackathon! 🚀
+
+Say goodbye to static, all-or-nothing token escrows. We’ve unlocked streaming multi-tranche milestone vaults with arbiter consensus fallback. 🧵👇
+
+2/3 ⚡ Built for speed & institutional observability:
+• 100% Rust @AnchorLang Sealevel execution with PDA-isolated vault security
+• Token-2022 & standard SPL support
+• Real-time enterprise alerts wired via @Resend & Discord webhooks for instant CFO/DevOps visibility
+
+3/3 🛡️ Zero griefing. Zero capital locks. Automated rent reclamation.
+Full code, Dockerized telemetry daemons, and end-to-end passing test suites are live & open-source!
+
+Check out our submission for the Colosseum Hackathon: https://github.com/vortex-protocol/vortex-core
+#Solana #Colosseum #Web3 #Rust

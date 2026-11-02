@@ -1,0 +1,26 @@
+flowchart TD
+    subgraph Client & Autonomous Agent Layer
+        AgentA[Autonomous Agent / Client] -->|1. Initialize Escrow with Velocity Limit| AnchorProgram[AetherVault Anchor Program]
+        Worker[Enterprise Automation Worker] -->|2. Index Logs & Monitor Events| RPC[Solana Helius/Triton RPC]
+    end
+
+    subgraph Solana Runtime & On-Chain State
+        AnchorProgram -->|Derives PDA| VaultPDA[(Vault Escrow Account)]
+        AnchorProgram -->|Tracks Quota| CircuitPDA[(Circuit Breaker State PDA)]
+        VaultPDA -->|Holds SOL/SPL| EscrowBalance[System Escrow Balance]
+        AgentB[Worker / Service Provider] -->|3. Submit Deliverable Hash| AnchorProgram
+        AgentA -->|4. Approve Deliverable & Release| AnchorProgram
+    end
+
+    subgraph Dynamic Safeguard Matrix
+        AnchorProgram -->|Check Outflow Velocity| VelocityCheck{Breached Max Quota?}
+        VelocityCheck -->|Yes| TripBreaker[State: Frozen / Emit Alert]
+        VelocityCheck -->|No| ReleaseFunds[Transfer SOL to Service Provider]
+    end
+
+    subgraph Enterprise Telemetry Dispatcher
+        RPC -->|WebSocket Account & Log Subscribe| WebhookEngine[Node.js Enterprise Event Worker]
+        WebhookEngine -->|High-Severity Alert| DiscordWebhook[Discord Operations Channel]
+        WebhookEngine -->|Incident Dispatch| SlackOps[Enterprise Slack Security Channel]
+        WebhookEngine -->|Transactional Email| ResendAPI[Resend Critical Mailer API]
+    end

@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  kronos-keeper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kronos-keeper-daemon
+    restart: unless-stopped
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - KEEPER_KEYPAIR_PATH=/secrets/keeper-id.json
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_ALERT_EMAIL=${RESEND_ALERT_EMAIL}
+    volumes:
+      - ./secrets:/secrets:ro
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"

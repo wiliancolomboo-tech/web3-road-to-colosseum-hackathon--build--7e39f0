@@ -1,0 +1,8 @@
+StrataFi Protocol Test Matrix
+    ✔ 1. Successfully initializes the vault and zero-copy epoch ledger (412ms)
+    ✔ 2. Processes dual-tranche asymmetric deposits (385ms)
+    ✔ 3. Enforces epoch interval guard - rejects premature crank calls (120ms)
+    ✔ 4. Simulates underlying yield accretion and settles epoch with surplus (3380ms)
+    ✔ 5. Allows Senior exit with prioritized yield redemption (310ms)
+
+  5 passing (4.6s)

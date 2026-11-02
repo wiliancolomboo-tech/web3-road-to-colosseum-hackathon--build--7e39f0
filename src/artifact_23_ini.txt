@@ -1,0 +1,13 @@
+# Network Endpoints
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_WSS_URL=wss://api.devnet.solana.com
+PROGRAM_ID=NexuSvauLt111111111111111111111111111111111
+NETWORK_CLUSTER=devnet
+
+# Enterprise Notification APIs
+RESEND_API_KEY=re_123456789abcdefghijklmnopqrstuv
+AUDIT_RECIPIENT_EMAIL=treasury-alerts@enterprise.com
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+
+# Microservice Telemetry
+PORT=8080

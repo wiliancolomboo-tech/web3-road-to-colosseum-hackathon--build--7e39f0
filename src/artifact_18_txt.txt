@@ -1,0 +1,6 @@
+3/ Zero manual bottlenecks. Zero counterparty risk. Full enterprise compliance.
+
+Built for the Road to Colosseum Hackathon.
+Github repo, full test matrix, and Docker one-click deploy: https://github.com/nexus-escrow/core
+
+Let's accelerate Solana payments. @Colosseum @Solana #Solana #Web3

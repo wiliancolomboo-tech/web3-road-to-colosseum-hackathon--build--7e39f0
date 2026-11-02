@@ -1,0 +1,8 @@
+# Solana Network RPC (Helius/QuickNode/Triton recommended for production)
+SOLANA_RPC_URL=https://api.devnet.solana.com
+PROGRAM_ID=Aegis111111111111111111111111111111111111111
+
+# Enterprise Telemetry & Resend Credentials
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_your_resend_api_key_here
+AUDIT_EMAIL_TO=treasury-ops@enterprise.internal

@@ -1,0 +1,10 @@
++---------------------------------------+-----------------------------+-------------------+--------+
+| Test Case                             | Expected Invariant          | Attack Vector     | Result |
++---------------------------------------+-----------------------------+-------------------+--------+
+| Initial PDA Funding                   | Vault balance == totalAmount| Underfunding lamports | PASS   |
+| Milestone Submission Auth             | Only authorized contractor  | Impersonation     | PASS   |
+| Deliverable Hash Commitment           | 32-byte hash equality check | In-flight payload tamper | PASS |
+| Proportional Lamport Disbursement     | Exact balance deduction     | Math drain/overflow | PASS |
+| Double Claiming Protection            | Sequential index guard      | Replay attack     | PASS   |
+| Expiration Circuit-Breaker Lock       | Cannot refund while in review| Premature client drain| PASS|
++---------------------------------------+-----------------------------+-------------------+--------+

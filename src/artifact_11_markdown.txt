@@ -1,0 +1,21 @@
+🧵 1/3
+Thrilled to unveil our MVP for the @ColosseumOrg Solana Hackathon: 
+🛡️ @AegisFlow — The Non-Custodial Continuous Streaming Treasury & Automated Keeper Engine on @Solana!
+
+DAOs and AI Agents can now stream linear capital by the second with zero counterparty risk. ⚡
+
+🧵 2/3
+Why AegisFlow changes Web3 enterprise rails:
+✅ Sub-second deterministic PDA vesting math
+✅ Incentivized permissionless keeper crank (never miss a payout)
+✅ Built-in circuit breakers for treasury security
+✅ Real-time enterprise alerts via @Resend, Slack & Discord
+
+Zero manual crons. 100% on-chain truth.
+
+🧵 3/3
+Complete code, Anchor smart contracts, and turnkey Docker keeper bots are 100% open-source and ready for mainnet:
+📦 GitHub: https://github.com/aegisflow/aegisflow-protocol
+
+Built for the future of Solana enterprise capital flow. Let’s build! 🚀
+#Solana #Colosseum #Rust #Anchor #Web3 #SolanaHackathon

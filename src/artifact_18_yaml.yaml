@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  aegis-agent-keeper:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis-keeper-daemon
+    restart: unless-stopped
+    environment:
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=AegisVau1t1111111111111111111111111111111111
+      - VAULT_AUTHORITY=9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin
+      - AGENT_SECRET_KEY=[12,43,155,...] # Injected agent key array
+      - RESEND_API_KEY=re_live_enterpriseToken12345
+      - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+      - ALERT_EMAIL_RECIPIENT=devsecops@enterprise.org
+      - PORT=8080
+    ports:
+      - "8080:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

@@ -1,0 +1,6 @@
+How SolGuard protects institutional assets:
+⚡ Deterministic Epoch Velocity: Hard caps outflows per time window directly in Anchor.
+🤖 Autonomous Keeper Agent: Subscribes to real-time slot telemetry.
+🚨 Dual-Rail SecOps Alerts: Instant emergency freeze + automated dispatches to @resend & Discord/Slack.
+
+Zero trust, 100% verified on-chain.

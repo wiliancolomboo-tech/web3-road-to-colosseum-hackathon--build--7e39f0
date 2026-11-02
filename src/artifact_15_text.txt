@@ -1,0 +1,7 @@
+Enterprise DAOs and Colosseum grant winners deserve bank-grade treasury security.
+
+Full production MVP is live on Devnet with complete QA test matrices and 1-click Docker orchestration.
+
+Check the open-source repo & build with us: https://github.com/aegis-protocol/aegis-core 🚀
+
+cc @ColosseumOrg @solana

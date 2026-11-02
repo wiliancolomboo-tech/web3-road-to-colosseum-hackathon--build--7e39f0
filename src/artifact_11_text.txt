@@ -1,0 +1,21 @@
+🧵 1/3
+Thrilled to introduce @AegisEscrow for the @Colosseum Hackathon! 🚀
+
+High-value enterprise transactions on Solana often stall due to counterparty unresponsiveness & lack of automated settlement. 
+
+Aegis solves this with autonomous PDA-secured milestone escrows and keeper-cranked SLAs. ⚡️🦀
+
+🧵 2/3
+Under the hood:
+🔒 Pure Anchor 0.30+ deterministic state machines
+⏱️ Zero-trust keeper auto-timeouts for unblocking stalled review windows
+🤝 Multisig dispute resolution with proportional basis-point splits
+🔔 Real-time enterprise alerts via Discord, Slack, & @Resend
+
+🧵 3/3
+No more frozen capital or manual tracking. AegisEscrow bridges production Web3 payments with enterprise treasury workflows.
+
+Check out our open-source codebase, verifiable test suite, and 1-click Docker runbook on GitHub! 
+
+Built on @Solana for the next wave of global commerce. 🌐
+#Solana #ColosseumHackathon #Web3 #Rust

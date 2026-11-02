@@ -1,0 +1,16 @@
+1/3 🛡️ Introducing @AegisSol — The Autonomous Risk Engine & Circuit-Breaker Protocol for enterprise treasuries on @Solana, built for the @ColosseumOrg Hackathon! 
+
+DAOs shouldn't lose millions to depegs while waiting on a 4-of-7 multi-sig sign-off at 2 AM. ⚡
+
+2/3 ⚡ Powered by Anchor & high-throughput Solana primitives, AegisSol watches on-chain drawdowns and executes programmatic safe-haven sweeps in <400ms. 
+
+Zero-custody surrender. Cryptographic circuit-breakers. Sub-second execution. Real-time @resend & Slack incident pipes.
+
+3/3 📦 Production-grade from Day 1:
+✅ 100% rust anchor engine with strict invariant checks
+✅ Turnkey Dockerized Keeper Daemon
+✅ Complete integration test coverage
+
+Check the open-source code & devnet deployment: https://github.com/aegis-solana/aegis-core 🚀
+
+#Solana #Colosseum #Web3Security #Rust #DeFi

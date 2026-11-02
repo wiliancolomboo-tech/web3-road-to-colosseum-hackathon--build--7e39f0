@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  aegisflow-daemon:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegisflow-enterprise-daemon
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Aegis111111111111111111111111111111111111111
+      - CRANK_KEYPAIR_PATH=/etc/aegisflow/crank-keypair.json
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - RESEND_TO_EMAIL=${RESEND_TO_EMAIL}
+      - RESEND_FROM_EMAIL=${RESEND_FROM_EMAIL:-notifications@aegisflow.io}
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL}
+    volumes:
+      - aegis-keys:/etc/aegisflow
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
+
+volumes:
+  aegis-keys:
+    driver: local

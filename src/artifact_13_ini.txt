@@ -1,0 +1,10 @@
+# Solana Network Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+PROGRAM_ID=AegisV1111111111111111111111111111111111111
+ADMIN_PUBKEY=7mK3YvYp9pX...
+AGENT_SECRET_KEY=[12,43,156,...]
+
+# Enterprise Incident Response Webhooks
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789abcdef
+RESEND_ALERT_EMAIL=security-team@enterprise.io

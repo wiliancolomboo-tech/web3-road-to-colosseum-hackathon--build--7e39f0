@@ -1,14 +1,12 @@
-# In the project root directory:
-# Copy programs/kratos/src/lib.rs into the program file
+# 1. Build optimized BPF bytecode with verifiable Anchor build
+anchor build --verifiable
 
-# Build the binary to generate IDL and program keypair
-anchor build
+# 2. Configure network targeting (Devnet)
+solana config set --url https://api.devnet.solana.com
+solana airdrop 2
 
-# Sync Program ID into lib.rs and Anchor.toml
-anchor keys sync
+# 3. Synchronize program keys and deploy
+solana program deploy ./target/deploy/aegisflow.so --program-id Aegis11111111111111111111111111111111111111
 
-# Rebuild with matching keys
-anchor build
-
-# Deploy to Localnet
-anchor deploy
+# 4. Verify deployment signature
+solana program show Aegis11111111111111111111111111111111111111

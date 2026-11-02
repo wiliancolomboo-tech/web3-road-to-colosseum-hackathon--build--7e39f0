@@ -1,0 +1,23 @@
+=============================================================================
+                      VORTEX OPERATIONS RUNBOOK
+=============================================================================
+
+1. KEEPER WALLET REBALANCING
+   The keeper keypair pays network gas fees upfront and is repaid on-chain 
+   via `task.keeper_tip`.
+   Monitor balance via:
+     solana balance <KEEPER_PUBKEY> -u devnet
+   If balance drops below 0.2 SOL, trigger alert via Slack monitor.
+
+2. FAILED TRANSACTIONS & CONGESTION MITIGATION
+   The Keeper Client uses Dynamic Priority Fees (`setComputeUnitPrice`) 
+   configured at 50,000 micro-lamports. During extreme mainnet congestion:
+   - Adjust `microLamports` in `src/index.ts` to the 75th percentile of the
+     prior 150 slots (`getRecentPrioritizationFees`).
+
+3. RESEND / WEBHOOK API OUTAGES
+   Telemetry failures are encapsulated using `Promise.allSettled`. If Resend
+   returns a 429 or 5xx, the smart contract execution will NOT revert.
+   Failed alert dispatches will log directly to stdout for log forwarders 
+   (e.g., Datadog / Grafana Loki).
+=============================================================================

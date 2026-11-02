@@ -1,0 +1,5 @@
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+RESEND_API_KEY=re_123456789abcdef
+COMPLIANCE_EMAIL=security@myenterprise.org
+AGENT_ORACLE_KEYPAIR=[1,2,3...255]

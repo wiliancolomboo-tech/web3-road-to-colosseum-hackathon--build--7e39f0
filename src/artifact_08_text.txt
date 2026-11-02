@@ -1,0 +1,16 @@
+1/ Autonomous AI agents are taking over DeFi execution on @solana, but hot-wallet delegation exposes protocol treasuries to catastrophic single-slot drain exploits. 
+
+Today we're unveiling AegisVault for the @ColosseumOrg Hackathon: The First Guarded Intent & Velocity Firewall for Solana. 🛡️⚡🧵👇
+
+2/ Built on Anchor, AegisVault introduces:
+🔒 On-chain velocity spend limits per epoch
+⏳ Optimistic intent queuing with challenge windows for high-volume transactions
+🚨 Real-time instant circuit-breaker webhooks via @resend & Discord
+
+Agents get instant execution for normal operations, while treasuries stay immune to drain exploits. 
+
+3/ 100% test coverage, turnkey Docker deployment, and complete open-source code ready for mainnet. 
+
+Check out our submission repository and demo on GitHub: https://github.com/aegis-protocol/aegis-vault 
+
+Building the impenetrable security layer for autonomous Solana agents with @ColosseumOrg 🚀

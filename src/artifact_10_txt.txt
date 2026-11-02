@@ -1,0 +1,9 @@
++---------------------------------------------------------------------------------------------------------+
+|                                    OPERATIONAL PROCEDURES & RUNBOOK                                     |
++------------------------------------+--------------------------------------------------------------------+
+| Health Check Endpoint              | GET http://localhost:8080/health returns {"status":"UP",slot:N}    |
+| RPC Degradation Fallback           | Primary: Helius -> Secondary: QuickNode -> Tertiary: Solana Public |
+| Keeper Key Rotation                | Update KEEPER_PRIVATE_KEY in .env & invoke `docker-compose up -d`  |
+| Emergency Escrow Cancellation      | Sponsor invokes `cancel_inactive_escrow` if no work past 30 days   |
+| Dispute Arbitration Handover       | Handed over to Squads Protocol Multi-Sig Governance PDA            |
++------------------------------------+--------------------------------------------------------------------+

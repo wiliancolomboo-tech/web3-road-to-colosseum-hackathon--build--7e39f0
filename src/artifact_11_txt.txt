@@ -1,0 +1,19 @@
+AEGIS-SOL OPERATIONAL RUNBOOK
+================================================================================
+INCIDENT STAGE          ACTION REQUIRED
+--------------------------------------------------------------------------------
+1. Key Compromise       Trigger: Admin invokes `update_agent(new_pubkey)`.
+                        Impact: Instantly revokes compromised agent key without 
+                        draining TVL or pausing contract.
+                        
+2. Market Anomaly       Trigger: Autonomous Sentinel halts rebalances if 
+                        slippage > 5% or velocity cap is reached.
+                        SecOps: Inspect Discord/Resend alert payload for root cause.
+
+3. Emergency Freeze     Trigger: Multisig Governance invokes `set_emergency_freeze(true)`.
+                        Impact: Freezes deposits and automated rebalancing.
+                        
+4. Capital Recovery     Prerequisite: Vault must be frozen.
+                        Action: Admin executes `emergency_withdraw()` directly to
+                        designated institutional cold treasury address.
+================================================================================

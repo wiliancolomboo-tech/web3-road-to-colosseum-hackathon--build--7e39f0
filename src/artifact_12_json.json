@@ -1,0 +1,8 @@
+{
+  "status": "HEALTHY",
+  "uptime_seconds": 86420,
+  "last_synced_slot": 298418293,
+  "connected_network": "solana-mainnet-beta",
+  "active_sentinel_vaults": 42,
+  "queued_executions": 0
+}

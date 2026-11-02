@@ -1,0 +1,8 @@
+Why AeonVault is different:
+
+🔒 100% PDA-governed token vaults (zero admin keys)
+⏱ Deterministic timeout refund cranks
+⚖️ Arbiter dispute slashing
+📧 Real-time enterprise alerts via @resend & Slack webhooks
+
+Sub-second settlements on Solana with enterprise-grade audit telemetry.

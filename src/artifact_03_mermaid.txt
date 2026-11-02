@@ -1,0 +1,23 @@
+sequenceDiagram
+    autonumber
+    participant K as Sentinel Keeper
+    participant V as Aegis Vault PDA
+    participant R as On-Chain Risk Engine
+    participant S as Solana Runtime
+    participant W as Enterprise Webhook (Discord/Resend)
+
+    K->>V: execute_rebalance(target_allocation, max_slippage_bps)
+    V->>R: check_invariants(delta_amount, current_timestamp)
+    alt Velocity or Slippage Exceeded
+        R-->>V: Invariant Violation Detected
+        V->>V: Set state = VaultStatus::Frozen
+        V->>S: Emit CircuitBreakerTriggeredEvent
+        S-->>K: Transaction Receipt (Halted)
+        K->>W: POST Incident Webhook (Severity: CRITICAL)
+    else Parameters Within Risk Bounds
+        R-->>V: Invariant OK
+        V->>V: Update internal accounting & velocity window
+        V->>S: Emit RebalanceExecutedEvent
+        S-->>K: Transaction Confirmed (Signature)
+        K->>W: POST Telemetry Audit (Severity: INFO)
+    end

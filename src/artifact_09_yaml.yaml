@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  chronolock-keeper:
+    build:
+      context: ./services/keeper-worker
+      dockerfile: Dockerfile
+    container_name: chronolock_keeper_daemon
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - SOLANA_RPC_URL=https://api.devnet.solana.com
+      - PROGRAM_ID=Chrno7Yq91R3KzUeN9r62v9eYtYFw5e8qM3v8b2b7jKL
+      - KEEPER_PRIVATE_KEY=${KEEPER_PRIVATE_KEY}
+      - ENTERPRISE_WEBHOOK_URL=https://api.enterprise.com/webhooks/chronolock
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
+      - RESEND_API_KEY=${RESEND_API_KEY}
+      - AUDIT_EMAIL_TO=treasury@enterprise-partner.xyz
+    ports:
+      - "8080:8080"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "5"

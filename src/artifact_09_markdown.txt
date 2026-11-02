@@ -1,0 +1,15 @@
+### Emergency SecOps Runbook
+
+1. Incident Type: Grantee Compromise / Insolvency
+   Action: Call `set_paused(true)` via Guardian Keypair immediately.
+   Execution Command:
+   `anchor run pause-stream --stream <STREAM_PDA> --keypair ./keys/guardian.json`
+
+2. Incident Type: Liquidity Reclaim / Project Forfeiture
+   Action: Call `cancel_and_clawback()` to guarantee immediate return of all unvested tokens to treasury custody.
+   Execution Command:
+   `anchor run clawback --stream <STREAM_PDA> --keypair ./keys/treasury-admin.json`
+
+3. Telemetry Check
+   Endpoint: GET http://localhost:8080/health
+   Response: `{"status":"HEALTHY","synced_slot":284918231,"resend_ready":true}`

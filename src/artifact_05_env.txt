@@ -1,0 +1,15 @@
+# Solana Network Configuration
+SOLANA_RPC_URL=https://api.devnet.solana.com
+SOLANA_NETWORK=devnet
+PROGRAM_ID=Shield1111111111111111111111111111111111111
+
+# Keeper Authentication
+KEEPER_KEYPAIR_PATH=/app/credentials/keeper-keypair.json
+COLLATERAL_MINT=So11111111111111111111111111111111111111112
+RESERVE_ACCOUNT=7m76ZJ26sYdYkFf3ZqZ32vPzC92sX2jCg9A2M4D2F2K1
+
+# Enterprise Telemetry
+RESEND_API_KEY=re_123456789_enterprise_prod_key
+ALERT_EMAIL=security-operations@solshield.fi
+DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
+POLL_INTERVAL_MS=1000

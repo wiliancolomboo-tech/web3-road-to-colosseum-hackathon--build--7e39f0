@@ -1,0 +1,18 @@
+1/3 🛡️ Introducing @AegisPay: Autonomous Milestone Streaming & Disputable Escrow for @Solana. 
+
+Grants, contractor payouts, and B2B vendor settlements shouldn't depend on slow 5% centralized escrows or risky multisigs. 
+
+We built the institutional escrow standard for the Solana ecosystem. 🧵👇 #SolanaColosseum
+
+2/3 ⚡ Under the hood:
+• Deterministic isolated PDA vaults with 400ms finality
+• Dual-assertion milestone release + Ed25519 oracle verification
+• Fail-safe expiration clawbacks & customizable dispute distributions
+• Real-time webhook telemetry straight into Slack, Discord & @Resend
+
+3/3 🏆 Built for the @ColosseumOrg Hackathon. 
+
+Turnkey dockerized daemon, 100% Rust Anchor safety without unsafe blocks, and production test coverage.
+
+Check out our code, deploy an escrow vault in 1 click, and help us redefine Web3 disbursements! 🚀
+🔗 https://github.com/aegispay/protocol

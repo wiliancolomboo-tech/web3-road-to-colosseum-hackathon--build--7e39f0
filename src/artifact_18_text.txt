@@ -1,0 +1,8 @@
+chronos-engine integration verification
+    ✔ 1. Successfully initializes Chronos Market Escrows (441ms)
+    ✔ 2. Maker deposits Limit Sell Intent (Selling Token A for Token B) (312ms)
+    ✔ 3. Fails when Solver attempts to fill below min_amount_out (Slippage Guard) (189ms)
+    ✔ 4. Solver atomically matches and settles the Intent Order (354ms)
+    ✔ 5. Maker creates and cleanly cancels an order returning escrowed assets (298ms)
+
+  5 passing (2s)

@@ -1,0 +1,27 @@
+# Multi-stage production build for ChronoLock Keeper Worker
+FROM node:20-alpine AS builder
+
+WORKDIR /usr/src/app
+
+COPY package.json yarn.lock tsconfig.json ./
+RUN yarn install --frozen-lockfile
+
+COPY src/ ./src/
+RUN yarn build
+
+# Final runtime stage
+FROM node:20-alpine AS runner
+WORKDIR /usr/src/app
+ENV NODE_ENV=production
+
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile --production
+
+COPY --from=builder /usr/src/app/dist ./dist
+
+USER node
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:8080/health', (r) => {if (r.statusCode !== 200) process.exit(1);})"
+
+EXPOSE 8080
+CMD ["node", "dist/index.js"]

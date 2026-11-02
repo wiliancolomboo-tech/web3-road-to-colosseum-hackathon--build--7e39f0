@@ -1,0 +1,17 @@
+1/3 🌊 Introducing @VortexProtocol — built for the @Colosseum #Solana Hackathon! 🚀
+
+DAOs and grant foundations lose millions each year to static token cliffs, stalled milestones, and fragmented treasury accounting.
+
+We built an institutional streaming settlement engine on Solana that fixes this forever. 🧵👇
+
+2/3 ⚡ Real-time sub-second streaming meets enterprise execution:
+🔒 Programmatic Clawbacks: Zero-risk capital recovery on breach
+🛡️ PDA Escrow Security: Exact-math fixed-point precision with zero drift
+📡 Instant Enterprise Telemetry: Real-time settlement piped directly to Slack & @resend
+
+3/3 💻 100% open-source, fully tested Anchor v0.30 smart contracts, turnkey Docker container, and instant deployment configs ready for mainnet.
+
+Check out our code, run the test matrix, and experience the future of autonomous treasury operations:
+🔗 https://github.com/vortex-protocol/vortex-core
+
+cc @Colosseum @solana #SolanaDev #Anchor #DeFi
