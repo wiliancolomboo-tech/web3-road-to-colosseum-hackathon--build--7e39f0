@@ -3,6 +3,6 @@ SOLANA_WS_URL=wss://api.devnet.solana.com
 PROGRAM_ID=AegisFlow11111111111111111111111111111111111
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
-RESEND_API_KEY=re_xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+RESEND_API_KEY=re_test_000000000000000000000000
 NOTIFICATION_EMAIL=treasury-ops@enterprise.internal
 PORT=8080

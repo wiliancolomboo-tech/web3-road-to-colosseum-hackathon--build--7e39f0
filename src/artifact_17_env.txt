@@ -4,5 +4,5 @@ ADMIN_KEYPAIR_PATH=./keys/admin-keypair.json
 AGENT_KEYPAIR_PATH=./keys/agent-keypair.json
 ADMIN_PUBKEY=H8gU71K7vLz1L1k2S7v7cQ4sWk1uM2yYkZ5h9p
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
-RESEND_API_KEY=re_YOUR_LIVE_RESEND_KEY
+RESEND_API_KEY=re_test_000000000000000000000000
 ALERT_EMAIL_RECIPIENT=ops-pager@enterprise.com

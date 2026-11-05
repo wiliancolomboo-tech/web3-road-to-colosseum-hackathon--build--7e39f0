@@ -11,7 +11,7 @@ services:
       - SOLANA_RPC_URL=https://api.devnet.solana.com
       - PROGRAM_ID=NexuSVauLt111111111111111111111111111111111
       - AGENT_SECRET_KEY=[1,2,3...your_key_bytes]
-      - RESEND_API_KEY=re_live_enterprise_token_sample
+      - RESEND_API_KEY=re_test_000000000000000000000000
       - AUDIT_RECIPIENT_EMAIL=cfo-ops@enterprise.org
       - SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
     logging:

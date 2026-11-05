@@ -4,7 +4,7 @@ SOLANA_WS_ENDPOINT=wss://api.devnet.solana.com
 VANGUARD_PROGRAM_ID=VangUard11111111111111111111111111111111111
 
 # Notification Webhooks & APIs
-RESEND_API_KEY=re_1234567890abcdef
+RESEND_API_KEY=re_test_000000000000000000000000
 ALERT_EMAIL_RECIPIENT=treasury-auditors@company.com
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder

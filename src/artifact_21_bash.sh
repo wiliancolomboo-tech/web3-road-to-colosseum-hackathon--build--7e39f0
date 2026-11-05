@@ -14,7 +14,7 @@ echo "Deployed ZenithPay Program ID: $PROGRAM_ID"
 anchor test
 
 # 5. Launch Keeper Daemon via Docker Compose
-export RESEND_API_KEY="re_123456789_abcdefg"
+export RESEND_API_KEY="re_test_000000000000000000000000"
 export DISCORD_WEBHOOK_URL="https://api.example.com/webhooks/alerts/placeholder"
 docker compose up -d --build
 

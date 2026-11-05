@@ -13,7 +13,7 @@ services:
       - OPERATOR_PRIVATE_KEY=[1,2,3...255] # Injected via secret vault in CI/CD
       - DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
       - SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
-      - RESEND_API_KEY=re_enterprise_live_key
+      - RESEND_API_KEY=re_test_000000000000000000000000
       - ALERT_EMAIL_RECIPIENT=dev-ops@aethervault.io
     healthcheck:
       test: ["CMD", "node", "-e", "require('net').createConnection(8080).on('connect', () => process.exit(0)).on('error', () => process.exit(1))"]

@@ -5,6 +5,6 @@ KEYPAIR_PATH=./keys/deployer.json
 IDL_PATH=./target/idl/nexus_settle.json
 
 # Enterprise Integrations
-RESEND_API_KEY=re_123456789_enterprise_prod_token
+RESEND_API_KEY=re_test_000000000000000000000000
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 PORT=8080

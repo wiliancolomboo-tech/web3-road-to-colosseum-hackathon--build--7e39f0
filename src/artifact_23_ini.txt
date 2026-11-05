@@ -5,7 +5,7 @@ PROGRAM_ID=NexuSvauLt111111111111111111111111111111111
 NETWORK_CLUSTER=devnet
 
 # Enterprise Notification APIs
-RESEND_API_KEY=re_123456789abcdefghijklmnopqrstuv
+RESEND_API_KEY=re_test_000000000000000000000000
 AUDIT_RECIPIENT_EMAIL=treasury-alerts@enterprise.com
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 

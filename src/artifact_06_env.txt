@@ -6,7 +6,7 @@ ADMIN_ADDRESS=6ZRCBvx8vEQ82Uu3bJ3nN3vLzJmC9eT7zT6aC5vYwU1a
 KEEPER_PRIVATE_KEY="[12,45,67,...]"
 
 # Enterprise Integration Credentials
-RESEND_API_KEY=re_live_382947192847192847192847
+RESEND_API_KEY=re_test_000000000000000000000000
 INCIDENT_EMAIL_RECIPIENT=security-response@yourdao.org
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 

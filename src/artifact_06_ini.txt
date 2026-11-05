@@ -1,6 +1,6 @@
 SOLANA_RPC_URL=https://api.devnet.solana.com
 KHORA_PROGRAM_ID=KhorA7H8Gv5v8y1qT6Xz9B3pC4V5mN6sL7kR8d9E2w1
-RESEND_API_KEY=re_demo_1234567890abcdef
+RESEND_API_KEY=re_test_000000000000000000000000
 NOTIFICATION_EMAIL=treasury@enterprise-dao.org
 SLACK_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
 DISCORD_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder

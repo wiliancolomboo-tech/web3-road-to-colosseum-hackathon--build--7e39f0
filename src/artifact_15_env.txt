@@ -4,6 +4,6 @@ SOLANA_WS_URL=wss://api.devnet.solana.com
 PROGRAM_ID=SntryVault1111111111111111111111111111111111
 
 # Enterprise Alerting Credentials
-RESEND_API_KEY=re_123456789_enterpriseKey
+RESEND_API_KEY=re_test_000000000000000000000000
 SECURITY_ALERT_EMAIL=secops@institutionalvault.xyz
 OPS_WEBHOOK_URL=https://api.example.com/webhooks/alerts/placeholder
